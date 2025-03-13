@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRCStats</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/logo.png">
+
+    <style>
+        .search{
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .searchB{
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            padding: 10px;
+            height: 42px;
+            margin-left: -3px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+    <h1>FRCStats</h1>
+    <h2>Get Analytics For Any Team</h2>
+    <input type="text" class="search" id="teamNumber" placeholder="Team Number">
+    <button class="searchB" onclick="searchTeam()">Search</button>
+    </div>
+    <!-- <h1>Top 100 Teams</h1>
+    <button style="width: 200px;">Leaderboard</button> -->
+    <h1>Match Predictions</h1>
+    <button style="width: 200px;">Match Predictor</button>
+
+    <script>
+        function searchTeam() {
+            var teamNumber = document.getElementById('teamNumber').value;
+            window.location.href = '/review/' + teamNumber;
+        }
+    </script>
+</body>
+
+</html>

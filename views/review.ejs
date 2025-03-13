@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Review</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/logo.png">
+    <style>
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/index.html">Home</a>
+        <h1>Team <%= teamNumber %> Review</h1>
+        <% if (message) { %>
+            <p class="error"><%= message %></p>
+        <% } else { %>
+            <p>Median Alliance Points: <%= teamMedianPoints %></p>
+            <p>Season: 
+                <select id="yearSelect" onchange="location = '/review/<%= teamNumber %>?year=' + this.value;">
+                    <% yearsParticipated.sort((a, b) => b - a).forEach(y => { %>
+                        <option value="<%= y %>" <%= y == year ? 'selected' : '' %>><%= y %></option>
+                    <% }) %>
+                </select>
+            </p>
+            <p>Win Percentage: <%= winPercentage %></p>
+        <% } %>
+    </div>
+
+    <h2>Future Matches Prediction</h2>
+    <% if (predictions.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Match</th>
+                    <th>Red Alliance Teams</th>
+                    <th>Red Median Points</th>
+                    <th>Blue Alliance Teams</th>
+                    <th>Blue Median Points</th>
+                    <th>Predicted Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% predictions.forEach(prediction => { %>
+                    <tr>
+                        <td><%= prediction.matchKey %></td>
+                        <td class="red-alliance"><%= prediction.redTeams %></td>
+                        <td class="red-alliance"><%= prediction.redMedian %></td>
+                        <td class="blue-alliance"><%= prediction.blueTeams %></td>
+                        <td class="blue-alliance"><%= prediction.blueMedian %></td>
+                        <td><%= prediction.predictedWinner %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No future matches scheduled or predictions available.</p>
+    <% } %>
+
+    <h2>Past Match Results</h2>
+    <% if (matches.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Match</th>
+                    <th>Red Score</th>
+                    <th>Blue Score</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% matches.forEach(match => { %>
+                    <tr class="<%= match.alliance.toLowerCase() %>-row">
+                        <td><%= match.event %></td>
+                        <td><%= match.matchKey %></td>
+                        <td><%= match.redScore %></td>
+                        <td><%= match.blueScore %></td>
+                        <td class="<%= match.result.toLowerCase() %>"><%= match.result %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No match results available.</p>
+    <% } %>
+</body>
+</html>

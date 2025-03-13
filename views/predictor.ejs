@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRC Match Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/logo.png">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        .alliance-box {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .red, .blue {
+            width: 45%;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .red {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff4444;
+        }
+        .blue {
+            background: rgba(0, 0, 255, 0.2);
+            border: 2px solid #4444ff;
+        }
+        input {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+        }
+        .result {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .winner {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .error {
+            color: #ff4444;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/index.html">Home</a>
+        <h1>FRC Match Predictor</h1>
+        <form method="POST">
+            <div class="alliance-box">
+                <div class="red">
+                    <h2>Red Alliance</h2>
+                    <input type="number" name="red1" placeholder="Red Team 1" required>
+                    <input type="number" name="red2" placeholder="Red Team 2" required>
+                    <input type="number" name="red3" placeholder="Red Team 3" required>
+                </div>
+                <div class="blue">
+                    <h2>Blue Alliance</h2>
+                    <input type="number" name="blue1" placeholder="Blue Team 1" required>
+                    <input type="number" name="blue2" placeholder="Blue Team 2" required>
+                    <input type="number" name="blue3" placeholder="Blue Team 3" required>
+                </div>
+            </div>
+            <button type="submit">Predict Match</button>
+        </form>
+
+        <% if (prediction) { %>
+            <div class="result">
+                <h2>Match Prediction</h2>
+                <p>Red Alliance: <%= prediction.redTeams.join(', ') %> (Avg: <%= prediction.redMedian %>)</p>
+                <p>Blue Alliance: <%= prediction.blueTeams.join(', ') %> (Avg: <%= prediction.blueMedian %>)</p>
+                <p class="winner">Predicted Winner: <%= prediction.predictedWinner %> Alliance</p>
+            </div>
+        <% } %>
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+    </div>
+</body>
+</html>
