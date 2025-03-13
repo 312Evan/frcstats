@@ -15,12 +15,11 @@
 </head>
 <body>
     <div class="header">
-        <a href="/index.html">Home</a>
+        <a style="display: flex; position: fixed;" href="/index.html">Home</a>
         <h1>Team <%= teamNumber %> Review</h1>
         <% if (message) { %>
             <p class="error"><%= message %></p>
         <% } else { %>
-            <p>Median Alliance Points: <%= teamMedianPoints %></p>
             <p>Season: 
                 <select id="yearSelect" onchange="location = '/review/<%= teamNumber %>?year=' + this.value;">
                     <% yearsParticipated.sort((a, b) => b - a).forEach(y => { %>
@@ -28,7 +27,9 @@
                     <% }) %>
                 </select>
             </p>
+            <p><%=wins%> Wins | <%=losses%> Losses | <%=ties%> Ties</p>
             <p>Win Percentage: <%= winPercentage %></p>
+            <p>Median Alliance Points: <%= teamMedianPoints %></p>
         <% } %>
     </div>
 

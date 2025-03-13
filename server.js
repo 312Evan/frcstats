@@ -150,6 +150,9 @@ app.get('/review/:teamNumber', async (req, res) => {
       yearsParticipated,
       message: allMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
       teamMedianPoints: teamMedianPoints.toFixed(2),
+      wins,
+      losses,
+      ties,
       winPercentage,
       matches: matchResults,
       predictions
