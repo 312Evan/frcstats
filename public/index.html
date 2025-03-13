@@ -9,28 +9,42 @@
     <link rel="icon" href="/logo.png">
 
     <style>
-        .search{
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
+        .searchC {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .searchB{
+        .search {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            flex-grow: 1;
+            min-width: 150px;
+        }
+
+        .searchB {
             border-top-left-radius: 0px;
             border-bottom-left-radius: 0px;
             padding: 10px;
             height: 42px;
             margin-left: -3px;
             position: relative;
+            white-space: nowrap;
         }
     </style>
 </head>
 
 <body>
     <div class="header">
-    <h1>FRCStats</h1>
-    <h2>Get Analytics For Any Team</h2>
-    <input type="text" class="search" id="teamNumber" placeholder="Team Number">
-    <button class="searchB" onclick="searchTeam()">Search</button>
+        <h1>FRCStats</h1>
+        <h2>Get Analytics For Any Team</h2>
+        <div class="searchC">
+            <input type="text" class="search" id="teamNumber" placeholder="Team Number">
+            <button class="searchB" onclick="searchTeam()">Search</button>
+        </div>
     </div>
     <!-- <h1>Top 100 Teams</h1>
     <button style="width: 200px;">Leaderboard</button> -->
