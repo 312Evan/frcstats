@@ -1,0 +1,16 @@
+{
+    "short_name": "BetaPage",
+    "name": "BetaPage",
+    "theme_color": "#4A90E2",
+    "background_color": "#F7F8F9",
+    "display": "standalone",
+    "icons": [
+        {  
+     "src": "/logo.png",
+     "sizes": "1024x1024",
+     "type": "image/png",
+     "density": "0.75"
+    }
+    ],
+    "start_url": "/index.html"
+  }
