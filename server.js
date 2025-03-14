@@ -3,7 +3,8 @@ const axios = require('axios');
 const app = express();
 const port = 3000;
 
-const TBA_API_KEY = 'aLJOKxvbznZAo6MTr8tcWz7sfb3daUwO13zEnstaSjIdVKPJp1XbmT6YZ8XgEl4j';
+require('dotenv').config();
+const TBA_API_KEY = process.env.blueapi;
 const TBA_BASE_URL = 'https://www.thebluealliance.com/api/v3';
 
 app.set('view engine', 'ejs');

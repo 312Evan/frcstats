@@ -106,17 +106,25 @@ th {
     table {
         width: 100%;
         font-size: 12px;
+        table-layout: fixed;
     }
 
     th, td {
         padding: 4px;
         word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     th {
         font-size: 14px;
     }
+
+    body {
+        overflow-x: hidden;
+    }
 }
+
 
 .win {
     color: rgb(135, 255, 135);
