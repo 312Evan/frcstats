@@ -23,7 +23,7 @@ h2 {
 
 select {
     border: none;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(136, 136, 136, 0.2);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
@@ -100,6 +100,22 @@ td {
 
 th {
     background-color: #181818;
+}
+
+@media screen and (max-width: 768px) {
+    table {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 4px;
+        word-wrap: break-word;
+    }
+
+    th {
+        font-size: 14px;
+    }
 }
 
 .win {
