@@ -7,6 +7,7 @@ require('dotenv').config();
 const TBA_API_KEY = process.env.blueapi;
 const TBA_BASE_URL = 'https://www.thebluealliance.com/api/v3';
 
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
