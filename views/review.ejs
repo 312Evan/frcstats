@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Team Review</title>
+    <title>Team <%= teamNumber %> - FRCStats</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" href="/logo.png">
     <link rel="manifest" href="/manifest.json">
@@ -19,7 +19,7 @@
 <body>
     <div class="header">
         <a style="display: flex;" href="/index.html">Home</a>
-        <h1>Team <%= teamNumber %> Review</h1>
+        <h1>Team <%= teamNumber %></h1>
         <% if (message) { %>
             <p class="error"><%= message %></p>
             <p>Season: 
