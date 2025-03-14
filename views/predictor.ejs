@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -19,24 +20,30 @@
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
+
         .alliance-box {
             display: flex;
             justify-content: space-between;
             margin: 20px 0;
         }
-        .red, .blue {
+
+        .red,
+        .blue {
             width: 45%;
             padding: 20px;
             border-radius: 10px;
         }
+
         .red {
             background: rgba(255, 0, 0, 0.2);
             border: 2px solid #ff4444;
         }
+
         .blue {
             background: rgba(0, 0, 255, 0.2);
             border: 2px solid #4444ff;
         }
+
         input {
             width: 100%;
             margin: 10px 0;
@@ -44,6 +51,7 @@
             border: none;
             border-radius: 5px;
         }
+
         .result {
             text-align: center;
             margin-top: 30px;
@@ -51,22 +59,26 @@
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
         }
+
         .winner {
             font-size: 24px;
             font-weight: bold;
             color: #00ff00;
             text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
+
         .error {
             color: #ff4444;
             text-align: center;
         }
+
         a {
             text-decoration: none;
             color: white;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <a style="display: flex;" href="/index.html">Home</a>
@@ -93,7 +105,7 @@
             <div class="result">
                 <h2>Match Prediction</h2>
                 <p>Red Alliance: <%= prediction.redTeams.join(', ') %> (Avg: <%= prediction.redMedian %>)</p>
-                <p>Blue Alliance: <%= prediction.blueTeams.join(', ') %> (Avg: <%= prediction.blueMedian %>)</p>
+                <p>Blue Alliance: <%= prediction.blueTeams.join(' , ') %> (Avg: <%= prediction.blueMedian %>)</p>
                 <p class="winner">Predicted Winner: <%= prediction.predictedWinner %> Alliance</p>
             </div>
         <% } %>
