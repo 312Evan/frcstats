@@ -22,6 +22,13 @@
         <h1>Team <%= teamNumber %> Review</h1>
         <% if (message) { %>
             <p class="error"><%= message %></p>
+            <p>Season: 
+                <select id="yearSelect" onchange="location = '/review/<%= teamNumber %>?year=' + this.value;">
+                    <% yearsParticipated.sort((a, b) => b - a).forEach(y => { %>
+                        <option value="<%= y %>" <%= y == year ? 'selected' : '' %>><%= y %></option>
+                    <% }) %>
+                </select>
+            </p>
         <% } else { %>
             <p>Season: 
                 <select id="yearSelect" onchange="location = '/review/<%= teamNumber %>?year=' + this.value;">
