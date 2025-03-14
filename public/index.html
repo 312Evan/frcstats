@@ -54,19 +54,11 @@
     <h1>Match Predictions</h1>
     <button onclick="window.location.href = '/predictor'" style="width: 200px;">Match Predictor</button>
 
+    <script src="/gradient.js"></script>
     <script>
-        randomGradient();
-
         function searchTeam() {
             var teamNumber = document.getElementById('teamNumber').value;
             window.location.href = '/review/' + teamNumber;
-        }
-
-        function randomGradient(){
-            var colors = ['#e61818', '#ff9f36', '#fffb36', '#44df0d', '#0ddfa9', '#2953d4', '#d429bd'];
-            var color1 = colors[Math.floor(Math.random() * colors.length)];
-            var color2 = colors[Math.floor(Math.random() * colors.length)];
-            document.querySelector('.header').style.background = `linear-gradient(to right, ${color1}, ${color2})`;
         }
     </script>
 </body>

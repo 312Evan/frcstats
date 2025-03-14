@@ -100,14 +100,6 @@
     <% } else { %>
         <p>No match results available.</p>
     <% } %>
-    <script>
-        randomGradient();
-        function randomGradient() {
-            var colors = ['#e61818', '#ff9f36', '#fffb36', '#44df0d', '#0ddfa9', '#2953d4', '#d429bd'];
-            var color1 = colors[Math.floor(Math.random() * colors.length)];
-            var color2 = colors[Math.floor(Math.random() * colors.length)];
-            document.querySelector('.header').style.background = `linear-gradient(to right, ${color1}, ${color2})`;
-        }
-    </script>
+    <script src="/gradient.js"></script>
 </body>
 </html>
