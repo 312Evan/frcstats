@@ -50,9 +50,9 @@
                 <tr>
                     <th>Match</th>
                     <th>Red Alliance Teams</th>
-                    <th>Red Median Points</th>
+                    <th>Red Prediction</th>
                     <th>Blue Alliance Teams</th>
-                    <th>Blue Median Points</th>
+                    <th>Blue Prediction</th>
                     <th>Predicted Winner</th>
                 </tr>
             </thead>
@@ -60,9 +60,9 @@
                 <% predictions.forEach(prediction => { %>
                     <tr>
                         <td><%= prediction.matchKey %></td>
-                        <td class="red-alliance"><%= prediction.redTeams %></td>
+                        <td class="red-alliance"><%= prediction.redTeams.replace(/frc/g, '') %></td>
                         <td class="red-alliance"><%= prediction.redMedian %></td>
-                        <td class="blue-alliance"><%= prediction.blueTeams %></td>
+                        <td class="blue-alliance"><%= prediction.blueTeams.replace(/frc/g, '') %></td>
                         <td class="blue-alliance"><%= prediction.blueMedian %></td>
                         <td><%= prediction.predictedWinner %></td>
                     </tr>

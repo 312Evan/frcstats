@@ -38,6 +38,7 @@ app.get('/review/:teamNumber', async (req, res) => {
   const teamNumber = req.params.teamNumber;
   const teamKey = `frc${teamNumber}`;
   const selectedYear = req.query.year || new Date().getFullYear();
+  const previousYear = selectedYear - 1;
   const currentDate = new Date();
 
   try {
@@ -47,16 +48,29 @@ app.get('/review/:teamNumber', async (req, res) => {
     );
     const yearsParticipated = yearsResponse.data || [];
 
-    const allMatchesResponse = await axios.get(
+    const allMatchesCurrentYearResponse = await axios.get(
       `${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`,
       { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
     );
-    const allMatches = allMatchesResponse.data || [];
+    const allMatchesPreviousYearResponse = await axios.get(
+      `${TBA_BASE_URL}/team/${teamKey}/matches/${previousYear}/simple`,
+      { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
+    );
+
+    const allMatches = [
+      ...allMatchesCurrentYearResponse.data || [],
+      ...allMatchesPreviousYearResponse.data || []
+    ];
+
+    const filteredMatches = allMatches.filter(match => {
+      const matchYear = new Date(match.time * 1000).getFullYear();
+      return matchYear === selectedYear;
+    });
 
     const teamScores = [];
     let wins = 0, losses = 0, ties = 0;
     let matchResults = [];
-    for (const match of allMatches) {
+    for (const match of filteredMatches) {
       const alliances = match.alliances;
       const redScore = alliances.red.score;
       const blueScore = alliances.blue.score;
@@ -106,7 +120,7 @@ app.get('/review/:teamNumber', async (req, res) => {
       return a.event.localeCompare(b.event);
     });
 
-    const futureMatches = allMatches.filter(match => {
+    const futureMatches = filteredMatches.filter(match => {
       const matchTime = new Date(match.predicted_time * 1000 || match.time * 1000 || Infinity);
       return matchTime > currentDate && match.alliances.red.score === -1 && match.alliances.blue.score === -1;
     });
@@ -117,11 +131,18 @@ app.get('/review/:teamNumber', async (req, res) => {
       const blueTeams = match.alliances.blue.team_keys;
 
       const getTeamMedian = async (team) => {
-        const teamMatches = await axios.get(
+        const teamMatchesCurrentYear = await axios.get(
           `${TBA_BASE_URL}/team/${team}/matches/${selectedYear}/simple`,
           { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
         );
-        const scores = teamMatches.data
+        const teamMatchesPreviousYear = await axios.get(
+          `${TBA_BASE_URL}/team/${team}/matches/${previousYear}/simple`,
+          { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
+        );
+        const scores = [
+          ...teamMatchesCurrentYear.data,
+          ...teamMatchesPreviousYear.data
+        ]
           .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
           .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
         return calculateMedian(scores);
@@ -148,7 +169,7 @@ app.get('/review/:teamNumber', async (req, res) => {
       teamNumber,
       year: selectedYear,
       yearsParticipated,
-      message: allMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
+      message: filteredMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
       teamMedianPoints: teamMedianPoints.toFixed(2),
       wins,
       losses,
