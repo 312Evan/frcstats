@@ -21,7 +21,7 @@ function formatMatchKey(matchKey) {
   const formattedEvent = eventCode.charAt(0).toUpperCase() + eventCode.slice(1).toLowerCase();
   const matchType = matchPart.slice(0, 2);
   const matchDetails = matchPart.slice(2);
-  const types = { 'qm': 'Qualifier', 'qf': 'Quarterfinal', 'sf': 'Semifinal', 'f': 'Final' };
+  const types = { 'qm': 'Qualifier', 'qf': 'Quarterfinal', 'sf': 'Semifinal', 'f1': 'Final'};
   if (['qf', 'sf', 'f'].includes(matchType) && matchDetails.includes('m')) {
     const setNumber = matchDetails.split('m')[0];
     return `${formattedEvent} ${types[matchType]} ${setNumber}`;
