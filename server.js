@@ -96,7 +96,8 @@ app.get('/review/:teamNumber', async (req, res) => {
         redScore,
         blueScore,
         result,
-        alliance: teamInRed ? 'Red' : 'Blue'
+        alliance: teamInRed ? 'Red' : 'Blue',
+        rawKey: match.key
       });
     }
 
@@ -105,8 +106,29 @@ app.get('/review/:teamNumber', async (req, res) => {
     const winPercentage = totalMatches > 0 ? ((wins / totalMatches) * 100).toFixed(2) + '%' : 'N/A';
 
     matchResults.sort((a, b) => {
-      if (a.event === b.event) return a.matchKey.localeCompare(b.matchKey);
-      return a.event.localeCompare(b.event);
+      const eventCompare = b.event.localeCompare(a.event);
+      if (eventCompare !== 0) return eventCompare;
+
+      const matchTypePriority = {
+        'Qualifier': 0,
+        'Quarterfinal': 1,
+        'Semifinal': 2,
+        'Final': 3
+      };
+
+      const getMatchInfo = (matchKey) => {
+        const parts = matchKey.split(' ');
+        const type = parts[parts.length - 2];
+        const number = parseInt(parts[parts.length - 1]);
+        return { type, number };
+      };
+
+      const aInfo = getMatchInfo(a.matchKey);
+      const bInfo = getMatchInfo(b.matchKey);
+
+      const typeCompare = (matchTypePriority[bInfo.type] || 0) - (matchTypePriority[aInfo.type] || 0);
+      if (typeCompare !== 0) return typeCompare;
+      return bInfo.number - aInfo.number;
     });
 
     const futureMatches = allMatches.filter(match => {
