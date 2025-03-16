@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Event Team Comparison</title>
+    <style>
+        .autocomplete {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #343238;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: rgba(54, 52, 58, 0.2);
+            border-bottom: 1px solid #d4d4d4;
+            border: none;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .autocomplete-items div:hover {
+            background-color: rgba(58, 34, 105, 0.8);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .team-list {
+            list-style: none;
+            padding: 0;
+            width: 800px;
+            display: inline-block;
+            font-size: 20px;
+        }
+
+        .team-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .team-item img {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 50%;
+        }
+
+        .team-info {
+            flex-grow: 1;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+        button{
+            width: 620px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header">
+        <a class="home" href="/index.html">Home</a>
+        <div class="container">
+            <h1>Compare Teams Between Events</h1>
+
+            <form method="POST" action="/compare">
+                <div class="autocomplete" style="width:300px; margin-bottom: 20px;">
+                    <input id="event1" type="text" name="event1" placeholder="First Event" autocomplete="off" required>
+                </div>
+                <div class="autocomplete" style="width:300px; margin-bottom: 20px;">
+                    <input id="event2" type="text" name="event2" placeholder="Second Event" autocomplete="off" required>
+                </div>
+                <button type="submit">Compare Events</button>
+            </form>
+        </div>
+    </div>
+    <br>
+
+        <% if (error) { %>
+            <p class="error">
+                <%= error %>
+            </p>
+            <% } %>
+
+                <% if (commonTeams && event1 && event2) { %>
+                    </h2>
+                    <h1><%= commonTeams.length %> Teams</h1>
+                    <ul class="team-list">
+                        <% commonTeams.forEach(team=> { %>
+                            <a href="/review/<%= team.number %>">
+                            <li class="team-item">
+                                <% if (team.avatar) { %>
+                                    <img src="<%= team.avatar %>" alt="<%= team.name %> logo">
+                                    <% } else { %>
+                                        <div
+                                            style="width: 60px; height: 60px; margin-right: 15px; background: #4c00ff; border-radius: 50%;">
+                                        </div>
+                                        <% } %>
+                                            <div class="team-info">
+                                                <strong>Team <%= team.number %></strong> - <%= team.name %>
+                                            </div>
+                            </li>
+                        </a>
+                            <% }) %>
+                    </ul>
+                    <% } %>
+    </div>
+
+    <script>
+        async function autocomplete(input) {
+            const response = await fetch('/api/events');
+            const events = await response.json();
+            const eventMap = new Map();
+            events.forEach(event => {
+                eventMap.set(event.name, event.key);
+            });
+
+            input.addEventListener('input', function (e) {
+                let val = this.value;
+                closeAllLists();
+                if (!val) return false;
+
+                let div = document.createElement('DIV');
+                div.setAttribute('class', 'autocomplete-items');
+                this.parentNode.appendChild(div);
+
+                for (let [name, key] of eventMap) {
+                    if (name.toLowerCase().includes(val.toLowerCase())) {
+                        let item = document.createElement('DIV');
+                        item.innerHTML = name;
+                        item.dataset.key = key;
+                        item.addEventListener('click', function (e) {
+                            input.value = this.innerHTML;
+                            input.dataset.key = this.dataset.key;
+                            closeAllLists();
+                        });
+                        div.appendChild(item);
+                    }
+                }
+            });
+
+            function closeAllLists(elmnt) {
+                let items = document.getElementsByClassName('autocomplete-items');
+                for (let i = 0; i < items.length; i++) {
+                    if (elmnt != items[i] && elmnt != input) {
+                        items[i].parentNode.removeChild(items[i]);
+                    }
+                }
+            }
+
+            document.addEventListener('click', function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            autocomplete(document.getElementById('event1'));
+            autocomplete(document.getElementById('event2'));
+
+            document.querySelector('form').addEventListener('submit', function (e) {
+                const event1Input = document.getElementById('event1');
+                const event2Input = document.getElementById('event2');
+                event1Input.name = 'event1';
+                event1Input.value = event1Input.dataset.key || event1Input.value;
+                event2Input.name = 'event2';
+                event2Input.value = event2Input.dataset.key || event2Input.value;
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -239,6 +239,99 @@ app.post('/predictor', async (req, res) => {
   }
 });
 
+
+app.get('/api/events', async (req, res) => {
+  const year = req.query.year || new Date().getFullYear();
+  try {
+    const response = await axios.get(`${TBA_BASE_URL}/events/${year}/simple`, {
+      headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch events' });
+  }
+});
+
+app.get('/compare', (req, res) => {
+  res.render('compare', {
+    commonTeams: null,
+    event1: null,
+    event2: null,
+    error: null
+  });
+});
+
+app.post('/compare', async (req, res) => {
+  const { event1, event2 } = req.body;
+  
+  try {
+    const [event1Response, event2Response] = await Promise.all([
+      axios.get(`${TBA_BASE_URL}/event/${event1}/teams/simple`, {
+        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+      }),
+      axios.get(`${TBA_BASE_URL}/event/${event2}/teams/simple`, {
+        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+      })
+    ]);
+
+    const event1Teams = new Set(event1Response.data.map(team => team.team_number));
+    const event2Teams = event2Response.data.map(team => team.team_number);
+    
+    const commonTeamNumbers = event2Teams.filter(team => event1Teams.has(team))
+      .sort((a, b) => a - b);
+
+    const commonTeamsPromises = commonTeamNumbers.map(async (teamNumber) => {
+      const [teamResponse, avatarResponse] = await Promise.all([
+        axios.get(`${TBA_BASE_URL}/team/frc${teamNumber}/simple`, {
+          headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+        }),
+        axios.get(`${TBA_BASE_URL}/team/frc${teamNumber}/media/2025`, {
+          headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+        })
+      ]);
+
+      const teamData = teamResponse.data;
+      const avatarData = avatarResponse.data.find(media => media.type === 'avatar');
+      const avatarUrl = avatarData?.details?.base64Image 
+        ? `data:image/png;base64,${avatarData.details.base64Image}`
+        : null;
+
+      return {
+        number: teamNumber,
+        name: teamData.nickname || 'Unknown Team',
+        avatar: avatarUrl
+      };
+    });
+
+    const commonTeams = await Promise.all(commonTeamsPromises);
+
+    const [event1Details, event2Details] = await Promise.all([
+      axios.get(`${TBA_BASE_URL}/event/${event1}/simple`, {
+        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+      }),
+      axios.get(`${TBA_BASE_URL}/event/${event2}/simple`, {
+        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+      })
+    ]);
+
+    res.render('compare', {
+      commonTeams,
+      event1: event1Details.data,
+      event2: event2Details.data,
+      error: null
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('compare', {
+      commonTeams: null,
+      event1: null,
+      event2: null,
+      error: 'Error fetching event or team data. Please try again.'
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
