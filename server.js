@@ -36,24 +36,87 @@ function calculateMedian(scores) {
   return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
+function getMatchNumber(matchKey) {
+  const parts = matchKey.split('_');
+  const matchPart = parts[1];
+  if (matchPart.startsWith('qm')) {
+    return parseInt(matchPart.replace('qm', ''), 10);
+  }
+  return parseInt(matchPart.match(/\d+$/)[0], 10);
+}
+
+async function estimateQueuingTime(eventKey, futureMatches, currentDate) {
+  try {
+    const eventMatchesResponse = await axios.get(
+      `${TBA_BASE_URL}/event/${eventKey}/matches/simple`,
+      { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
+    );
+    const allEventMatches = eventMatchesResponse.data;
+
+    const completedMatches = allEventMatches
+      .filter(match => match.actual_time && match.alliances.red.score !== -1 && match.alliances.blue.score !== -1)
+      .sort((a, b) => a.actual_time - b.actual_time);
+
+    const MIN_MATCH_INTERVAL = 20000;
+    let avgTimeBetweenMatches;
+
+    if (completedMatches.length < 2) {
+      avgTimeBetweenMatches = MIN_MATCH_INTERVAL;
+    } else {
+      const recentMatches = completedMatches.slice(-10);
+      const timeDiffs = [];
+
+      for (let i = 1; i < recentMatches.length; i++) {
+        const prevStart = recentMatches[i - 1].actual_time * 1000;
+        const currStart = recentMatches[i].actual_time * 1000;
+        const diff = currStart - prevStart;
+        if (diff > 0) timeDiffs.push(diff);
+      }
+
+      if (timeDiffs.length === 0) {
+        avgTimeBetweenMatches = MIN_MATCH_INTERVAL;
+      } else {
+        avgTimeBetweenMatches = timeDiffs.reduce((sum, diff) => sum + diff, 0) / timeDiffs.length;
+        avgTimeBetweenMatches = Math.max(avgTimeBetweenMatches, MIN_MATCH_INTERVAL);
+      }
+    }
+
+    const lastMatch = completedMatches[completedMatches.length - 1] || { time: currentDate / 1000 };
+    const lastMatchTime = new Date((lastMatch.actual_time || lastMatch.time) * 1000);
+    const lastMatchNumber = lastMatch ? getMatchNumber(lastMatch.key) : 0;
+
+    return futureMatches.map(match => {
+      const matchNumber = getMatchNumber(match.key);
+      const matchGap = matchNumber - lastMatchNumber;
+      const estimatedTime = new Date(lastMatchTime.getTime() + matchGap * avgTimeBetweenMatches);
+      const timeUntil = Math.round((estimatedTime - currentDate) / (1000 * 60));
+      return {
+        matchKey: formatMatchKey(match.key),
+        estimatedTime: estimatedTime.toLocaleString(),
+        timeUntil: timeUntil >= 0 ? `${timeUntil} minutes` : 'Match may have started'
+      };
+    });
+  } catch (error) {
+    console.error('Error estimating queuing time:', error);
+    return futureMatches.map(match => ({
+      matchKey: formatMatchKey(match.key),
+      estimatedTime: 'Error',
+      timeUntil: 'N/A'
+    }));
+  }
+}
+
 app.get('/review/:teamNumber', async (req, res) => {
   const teamNumber = req.params.teamNumber;
   const teamKey = `frc${teamNumber}`;
   const selectedYear = req.query.year || new Date().getFullYear();
-  const previousYear = selectedYear - 1;
   const currentDate = new Date();
 
   try {
     const [yearsResponse, matchesCurrentYearResponse, eventsResponse] = await Promise.all([
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/years_participated`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      })
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/years_participated`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } })
     ]);
 
     const yearsParticipated = yearsResponse.data || [];
@@ -109,13 +172,7 @@ app.get('/review/:teamNumber', async (req, res) => {
       const eventCompare = b.event.localeCompare(a.event);
       if (eventCompare !== 0) return eventCompare;
 
-      const matchTypePriority = {
-        'Qualifier': 0,
-        'Quarterfinal': 1,
-        'Semifinal': 2,
-        'Final': 3
-      };
-
+      const matchTypePriority = { 'Qualifier': 0, 'Quarterfinal': 1, 'Semifinal': 2, 'Final': 3 };
       const getMatchInfo = (matchKey) => {
         const parts = matchKey.split(' ');
         const type = parts[parts.length - 2];
@@ -137,19 +194,15 @@ app.get('/review/:teamNumber', async (req, res) => {
     });
 
     const teamMedianCache = {};
-
     const getTeamMedian = async (team) => {
       if (teamMedianCache[team]) return teamMedianCache[team];
-
       const teamMatchesResponse = await axios.get(
         `${TBA_BASE_URL}/team/${team}/matches/${selectedYear}/simple`,
         { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
       );
-
       const scores = teamMatchesResponse.data
         .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
         .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
-
       const median = calculateMedian(scores);
       teamMedianCache[team] = median;
       return median;
@@ -158,14 +211,11 @@ app.get('/review/:teamNumber', async (req, res) => {
     const predictions = await Promise.all(futureMatches.slice(0, 5).map(async (match) => {
       const redTeams = match.alliances.red.team_keys;
       const blueTeams = match.alliances.blue.team_keys;
-
       const redMedians = await Promise.all(redTeams.map(getTeamMedian));
       const blueMedians = await Promise.all(blueTeams.map(getTeamMedian));
-
       const redAllianceMedian = calculateMedian(redMedians);
       const blueAllianceMedian = calculateMedian(blueMedians);
       const predictedWinner = redAllianceMedian > blueAllianceMedian ? 'Red' : 'Blue';
-
       return {
         matchKey: formatMatchKey(match.key),
         redTeams: redTeams.join(', '),
@@ -175,6 +225,9 @@ app.get('/review/:teamNumber', async (req, res) => {
         predictedWinner
       };
     }));
+
+    const eventKey = futureMatches.length > 0 ? futureMatches[0].event_key : null;
+    const queuingEstimates = eventKey ? await estimateQueuingTime(eventKey, futureMatches, currentDate) : [];
 
     res.render('review', {
       teamNumber,
@@ -187,7 +240,8 @@ app.get('/review/:teamNumber', async (req, res) => {
       ties,
       winPercentage,
       matches: matchResults,
-      predictions
+      predictions,
+      queuingEstimates
     });
   } catch (error) {
     console.error(error);
@@ -199,7 +253,161 @@ app.get('/review/:teamNumber', async (req, res) => {
       teamMedianPoints: null,
       winPercentage: null,
       matches: [],
-      predictions: []
+      predictions: [],
+      queuingEstimates: []
+    });
+  }
+});
+
+app.get('/review/:teamNumber', async (req, res) => {
+  const teamNumber = req.params.teamNumber;
+  const teamKey = `frc${teamNumber}`;
+  const selectedYear = req.query.year || new Date().getFullYear();
+  const currentDate = new Date();
+
+  try {
+    const [yearsResponse, matchesCurrentYearResponse, eventsResponse] = await Promise.all([
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/years_participated`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } })
+    ]);
+
+    const yearsParticipated = yearsResponse.data || [];
+    const allMatches = matchesCurrentYearResponse.data || [];
+
+    const eventMap = {};
+    eventsResponse.data.forEach(event => {
+      eventMap[event.key] = event.name;
+    });
+
+    const teamScores = [];
+    let wins = 0, losses = 0, ties = 0;
+    const matchResults = [];
+
+    for (const match of allMatches) {
+      if (match.alliances.red.score === -1 || match.alliances.blue.score === -1) continue;
+
+      const redScore = match.alliances.red.score;
+      const blueScore = match.alliances.blue.score;
+      const teamInRed = match.alliances.red.team_keys.includes(teamKey);
+      const teamInBlue = match.alliances.blue.team_keys.includes(teamKey);
+
+      const allianceScore = teamInRed ? redScore : blueScore;
+      teamScores.push(allianceScore);
+
+      let result = '';
+      if (teamInRed) {
+        if (redScore > blueScore) { wins++; result = 'Win'; }
+        else if (redScore < blueScore) { losses++; result = 'Loss'; }
+        else { ties++; result = 'Tie'; }
+      } else if (teamInBlue) {
+        if (blueScore > redScore) { wins++; result = 'Win'; }
+        else if (blueScore < redScore) { losses++; result = 'Loss'; }
+        else { ties++; result = 'Tie'; }
+      }
+
+      matchResults.push({
+        event: eventMap[match.event_key] || "Unknown Event",
+        matchKey: formatMatchKey(match.key),
+        redScore,
+        blueScore,
+        result,
+        alliance: teamInRed ? 'Red' : 'Blue',
+        rawKey: match.key
+      });
+    }
+
+    const teamMedianPoints = calculateMedian(teamScores);
+    const totalMatches = wins + losses + ties;
+    const winPercentage = totalMatches > 0 ? ((wins / totalMatches) * 100).toFixed(2) + '%' : 'N/A';
+
+    matchResults.sort((a, b) => {
+      const eventCompare = b.event.localeCompare(a.event);
+      if (eventCompare !== 0) return eventCompare;
+
+      const matchTypePriority = { 'Qualifier': 0, 'Quarterfinal': 1, 'Semifinal': 2, 'Final': 3 };
+      const getMatchInfo = (matchKey) => {
+        const parts = matchKey.split(' ');
+        const type = parts[parts.length - 2];
+        const number = parseInt(parts[parts.length - 1]);
+        return { type, number };
+      };
+
+      const aInfo = getMatchInfo(a.matchKey);
+      const bInfo = getMatchInfo(b.matchKey);
+
+      const typeCompare = (matchTypePriority[bInfo.type] || 0) - (matchTypePriority[aInfo.type] || 0);
+      if (typeCompare !== 0) return typeCompare;
+      return bInfo.number - aInfo.number;
+    });
+
+    const futureMatches = allMatches.filter(match => {
+      const matchTime = new Date(match.predicted_time * 1000 || match.time * 1000 || Infinity);
+      return matchTime > currentDate && match.alliances.red.score === -1 && match.alliances.blue.score === -1;
+    });
+
+    const teamMedianCache = {};
+    const getTeamMedian = async (team) => {
+      if (teamMedianCache[team]) return teamMedianCache[team];
+      const teamMatchesResponse = await axios.get(
+        `${TBA_BASE_URL}/team/${team}/matches/${selectedYear}/simple`,
+        { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
+      );
+      const scores = teamMatchesResponse.data
+        .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
+        .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
+      const median = calculateMedian(scores);
+      teamMedianCache[team] = median;
+      return median;
+    };
+
+    const predictions = await Promise.all(futureMatches.slice(0, 5).map(async (match) => {
+      const redTeams = match.alliances.red.team_keys;
+      const blueTeams = match.alliances.blue.team_keys;
+      const redMedians = await Promise.all(redTeams.map(getTeamMedian));
+      const blueMedians = await Promise.all(blueTeams.map(getTeamMedian));
+      const redAllianceMedian = calculateMedian(redMedians);
+      const blueAllianceMedian = calculateMedian(blueMedians);
+      const predictedWinner = redAllianceMedian > blueAllianceMedian ? 'Red' : 'Blue';
+      return {
+        matchKey: formatMatchKey(match.key),
+        redTeams: redTeams.join(', '),
+        blueTeams: blueTeams.join(', '),
+        redMedian: redAllianceMedian.toFixed(2),
+        blueMedian: blueAllianceMedian.toFixed(2),
+        predictedWinner
+      };
+    }));
+
+    const eventKey = futureMatches.length > 0 ? futureMatches[0].event_key : null;
+    const queuingEstimates = eventKey ? await estimateQueuingTime(eventKey, futureMatches, currentDate) : [];
+
+    res.render('review', {
+      teamNumber,
+      year: selectedYear,
+      yearsParticipated,
+      message: allMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
+      teamMedianPoints: teamMedianPoints.toFixed(2),
+      wins,
+      losses,
+      ties,
+      winPercentage,
+      matches: matchResults,
+      predictions,
+      queuingEstimates
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('review', {
+      teamNumber,
+      year: selectedYear,
+      yearsParticipated: [],
+      message: 'Error fetching data from The Blue Alliance.',
+      teamMedianPoints: null,
+      winPercentage: null,
+      matches: [],
+      predictions: [],
+      queuingEstimates: []
     });
   }
 });

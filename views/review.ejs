@@ -52,15 +52,19 @@
                     <th>Red Alliance Teams</th>
                     <th>Blue Alliance Teams</th>
                     <th>Predicted Winner</th>
+                    <th>Estimated Time</th>
+                    <th>Time Until</th>
                 </tr>
             </thead>
             <tbody>
-                <% predictions.forEach(prediction => { %>
+                <% predictions.forEach((prediction, index) => { %>
                     <tr>
                         <td><%= prediction.matchKey %></td>
                         <td class="red-alliance"><%= prediction.redTeams.replace(/frc/g, '') %></td>
                         <td class="blue-alliance"><%= prediction.blueTeams.replace(/frc/g, '') %></td>
                         <td><%= prediction.predictedWinner %></td>
+                        <td><%= queuingEstimates[index]?.estimatedTime || 'N/A' %></td>
+                        <td><%= queuingEstimates[index]?.timeUntil || 'N/A' %></td>
                     </tr>
                 <% }) %>
             </tbody>
