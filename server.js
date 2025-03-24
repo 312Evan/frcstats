@@ -63,22 +63,43 @@ async function estimateQueuingTime(eventKey, futureMatches, currentDate) {
     if (completedMatches.length < 2) {
       avgTimeBetweenMatches = MIN_MATCH_INTERVAL;
     } else {
-      const recentMatches = completedMatches.slice(-10);
-      const timeDiffs = [];
+      const matchesByDay = {};
+      completedMatches.forEach(match => {
+        const matchDate = new Date(match.actual_time * 1000);
+        const dayKey = `${matchDate.getFullYear()}-${matchDate.getMonth()}-${matchDate.getDate()}`;
+        if (!matchesByDay[dayKey]) {
+          matchesByDay[dayKey] = [];
+        }
+        matchesByDay[dayKey].push(match);
+      });
 
-      for (let i = 1; i < recentMatches.length; i++) {
-        const prevStart = recentMatches[i - 1].actual_time * 1000;
-        const currStart = recentMatches[i].actual_time * 1000;
-        const diff = currStart - prevStart;
-        if (diff > 0) timeDiffs.push(diff);
-      }
+      const currentDay = new Date(currentDate);
+      const currentDayKey = `${currentDay.getFullYear()}-${currentDay.getMonth()}-${currentDay.getDate()}`;
+      const todayMatches = matchesByDay[currentDayKey] || [];
 
-      if (timeDiffs.length === 0) {
-        avgTimeBetweenMatches = MIN_MATCH_INTERVAL;
+      if (todayMatches.length < 2) {
+        const timeDiffs = [];
+        for (let i = 1; i < completedMatches.length; i++) {
+          const prevStart = completedMatches[i - 1].actual_time * 1000;
+          const currStart = completedMatches[i].actual_time * 1000;
+          const diff = currStart - prevStart;
+          if (diff > 0) timeDiffs.push(diff);
+        }
+        avgTimeBetweenMatches = timeDiffs.length > 0 
+          ? timeDiffs.reduce((sum, diff) => sum + diff, 0) / timeDiffs.length 
+          : MIN_MATCH_INTERVAL;
       } else {
+        const timeDiffs = [];
+        for (let i = 1; i < todayMatches.length; i++) {
+          const prevStart = todayMatches[i - 1].actual_time * 1000;
+          const currStart = todayMatches[i].actual_time * 1000;
+          const diff = currStart - prevStart;
+          if (diff > 0) timeDiffs.push(diff);
+        }
         avgTimeBetweenMatches = timeDiffs.reduce((sum, diff) => sum + diff, 0) / timeDiffs.length;
-        avgTimeBetweenMatches = Math.max(avgTimeBetweenMatches, MIN_MATCH_INTERVAL);
       }
+      
+      avgTimeBetweenMatches = Math.max(avgTimeBetweenMatches, MIN_MATCH_INTERVAL);
     }
 
     const lastMatch = completedMatches[completedMatches.length - 1] || { time: currentDate / 1000 };
@@ -100,8 +121,7 @@ async function estimateQueuingTime(eventKey, futureMatches, currentDate) {
     console.error('Error estimating queuing time:', error);
     return futureMatches.map(match => ({
       matchKey: formatMatchKey(match.key),
-      estimatedTime: 'Error',
-      timeUntil: 'N/A'
+      timeUntil: 'Not available yet'
     }));
   }
 }
@@ -113,14 +133,16 @@ app.get('/review/:teamNumber', async (req, res) => {
   const currentDate = new Date();
 
   try {
-    const [yearsResponse, matchesCurrentYearResponse, eventsResponse] = await Promise.all([
+    const [yearsResponse, matchesCurrentYearResponse, eventsResponse, teamResponse] = await Promise.all([
       axios.get(`${TBA_BASE_URL}/team/${teamKey}/years_participated`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
       axios.get(`${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } })
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
+      axios.get(`${TBA_BASE_URL}/team/${teamKey}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } })
     ]);
 
     const yearsParticipated = yearsResponse.data || [];
     const allMatches = matchesCurrentYearResponse.data || [];
+    const teamName = teamResponse.data.nickname || `Team ${teamNumber}`;
 
     const eventMap = {};
     eventsResponse.data.forEach(event => {
@@ -231,6 +253,7 @@ app.get('/review/:teamNumber', async (req, res) => {
 
     res.render('review', {
       teamNumber,
+      teamName,
       year: selectedYear,
       yearsParticipated,
       message: allMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
@@ -247,6 +270,7 @@ app.get('/review/:teamNumber', async (req, res) => {
     console.error(error);
     res.render('review', {
       teamNumber,
+      teamName: `Team ${teamNumber}`,
       year: selectedYear,
       yearsParticipated: [],
       message: 'Error fetching data from The Blue Alliance.',

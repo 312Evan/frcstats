@@ -20,6 +20,7 @@
     <div class="header">
         <a class="home" href="/index.html">Home</a>
         <h1>Team <%= teamNumber %></h1>
+        <h2><%= teamName %></h2>
         <% if (message) { %>
             <p class="error"><%= message %></p>
             <p>Season: 
@@ -52,8 +53,7 @@
                     <th>Red Alliance Teams</th>
                     <th>Blue Alliance Teams</th>
                     <th>Predicted Winner</th>
-                    <th>Estimated Time</th>
-                    <th>Time Until</th>
+                    <th>Estimated Time Until</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,7 +63,6 @@
                         <td class="red-alliance"><%= prediction.redTeams.replace(/frc/g, '') %></td>
                         <td class="blue-alliance"><%= prediction.blueTeams.replace(/frc/g, '') %></td>
                         <td><%= prediction.predictedWinner %></td>
-                        <td><%= queuingEstimates[index]?.estimatedTime || 'N/A' %></td>
                         <td><%= queuingEstimates[index]?.timeUntil || 'N/A' %></td>
                     </tr>
                 <% }) %>
