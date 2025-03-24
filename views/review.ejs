@@ -14,6 +14,24 @@
             text-decoration: none;
             color: white;
         }
+
+        canvas {
+            max-height: 500px;
+        }
+
+        details {
+            margin: 1em 0;
+        }
+
+        summary {
+            padding: 0.5em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 1em;
+        }
     </style>
 </head>
 <body>
@@ -44,61 +62,114 @@
         <% } %>
     </div>
 
-    <h2>Future Matches</h2>
-    <% if (predictions.length > 0) { %>
-        <table>
-            <thead>
-                <tr>
-                    <th>Match</th>
-                    <th>Red Alliance Teams</th>
-                    <th>Blue Alliance Teams</th>
-                    <th>Predicted Winner</th>
-                    <th>Estimated Time Until</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% predictions.forEach((prediction, index) => { %>
-                    <tr>
-                        <td><%= prediction.matchKey %></td>
-                        <td class="red-alliance"><%= prediction.redTeams.replace(/frc/g, '') %></td>
-                        <td class="blue-alliance"><%= prediction.blueTeams.replace(/frc/g, '') %></td>
-                        <td><%= prediction.predictedWinner %></td>
-                        <td><%= queuingEstimates[index]?.timeUntil || 'N/A' %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    <% } else { %>
-        <p>No future matches available at this time.</p>
+    <% if (matchScores.length > 0) { %>
+        <details open>
+            <summary>Average Points Over Matches</summary>
+            <div class="content">
+                <canvas id="scoreChart"></canvas>
+            </div>
+        </details>
     <% } %>
 
-    <h2>Past Matches</h2>
-    <% if (matches.length > 0) { %>
-        <table>
-            <thead>
-                <tr>
-                    <th>Event</th>
-                    <th>Match</th>
-                    <th>Red Score</th>
-                    <th>Blue Score</th>
-                    <th>Result</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% matches.forEach(match => { %>
-                    <tr class="<%= match.alliance.toLowerCase() %>-row">
-                        <td><%= match.event %></td>
-                        <td><%= match.matchKey %></td>
-                        <td><%= match.redScore %></td>
-                        <td><%= match.blueScore %></td>
-                        <td class="<%= match.result.toLowerCase() %>"><%= match.result %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    <% } else { %>
-        <p>No match results available.</p>
-    <% } %>
+    <details open>
+        <summary>Future Matches</summary>
+        <div class="content">
+            <% if (predictions.length > 0) { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Match</th>
+                            <th>Red Alliance Teams</th>
+                            <th>Blue Alliance Teams</th>
+                            <th>Predicted Winner</th>
+                            <th>Estimated Time Until</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% predictions.forEach((prediction, index) => { %>
+                            <tr>
+                                <td><%= prediction.matchKey %></td>
+                                <td class="red-alliance"><%= prediction.redTeams.replace(/frc/g, '') %></td>
+                                <td class="blue-alliance"><%= prediction.blueTeams.replace(/frc/g, '') %></td>
+                                <td><%= prediction.predictedWinner %></td>
+                                <td><%= queuingEstimates[index]?.timeUntil || 'N/A' %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>No future matches available at this time.</p>
+            <% } %>
+        </div>
+    </details>
+
+    <details open>
+        <summary>Past Matches</summary>
+        <div class="content">
+            <% if (matches.length > 0) { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Match</th>
+                            <th>Red Score</th>
+                            <th>Blue Score</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% matches.forEach(match => { %>
+                            <tr class="<%= match.alliance.toLowerCase() %>-row">
+                                <td><%= match.event %></td>
+                                <td><%= match.matchKey %></td>
+                                <td><%= match.redScore %></td>
+                                <td><%= match.blueScore %></td>
+                                <td class="<%= match.result.toLowerCase() %>"><%= match.result %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>No match results available.</p>
+            <% } %>
+        </div>
+    </details>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        <% if (matchScores.length > 0) { %>
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            const matchScores = <%- JSON.stringify(matchScores) %>;
+            const labels = matchScores.map(match => match.label);
+            const scores = matchScores.map(match => match.score);
+    
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Alliance Points',
+                        data: scores,
+                        borderColor: 'rgba(12, 64, 237, 1)',
+                        backgroundColor: 'rgba(12, 64, 237, 0.2)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Matches' } },
+                        y: { title: { display: true, text: 'Points' }, beginAtZero: true }
+                    },
+                    plugins: {
+                        title: { display: true, text: `Team <%= teamNumber %> Points` }
+                    }
+                }
+            });
+        <% } %>
+    </script>
+
     <script src="/gradient.js"></script>
 </body>
 </html>

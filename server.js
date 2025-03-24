@@ -7,100 +7,139 @@ require('dotenv').config();
 const TBA_API_KEY = process.env.blueapi;
 const TBA_BASE_URL = 'https://www.thebluealliance.com/api/v3';
 
-
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 
-function formatMatchKey(matchKey) {
-  const parts = matchKey.split('_');
-  const eventPart = parts[0];
-  const matchPart = parts[1];
+const fetchTBA = async (endpoint) => {
+  const response = await axios.get(`${TBA_BASE_URL}${endpoint}`, {
+    headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+  });
+  return response.data;
+};
+
+const calculateMedian = (scores) => {
+  if (!scores.length) return 0;
+  const sorted = scores.sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+};
+
+const formatMatchKey = (matchKey) => {
+  const [eventPart, matchPart] = matchKey.split('_');
   const year = eventPart.slice(0, 4);
   const eventCode = eventPart.slice(4);
   const formattedEvent = eventCode.charAt(0).toUpperCase() + eventCode.slice(1).toLowerCase();
   const matchType = matchPart.slice(0, 2);
   const matchDetails = matchPart.slice(2);
-  const types = { 'qm': 'Qualifier', 'qf': 'Quarterfinal', 'sf': 'Semifinal', 'f1': 'Final'};
+  const types = { 'qm': 'Qualifier', 'qf': 'Quarterfinal', 'sf': 'Semifinal', 'f1': 'Final' };
+
   if (['qf', 'sf', 'f'].includes(matchType) && matchDetails.includes('m')) {
     const setNumber = matchDetails.split('m')[0];
     return `${formattedEvent} ${types[matchType]} ${setNumber}`;
   }
   return `${formattedEvent} ${types[matchType] || matchType} ${matchDetails}`;
-}
+};
 
-function calculateMedian(scores) {
-  if (!scores.length) return 0;
-  const sorted = scores.sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-}
+const getMatchNumber = (matchKey) => {
+  const matchPart = matchKey.split('_')[1];
+  return matchPart.startsWith('qm')
+    ? parseInt(matchPart.replace('qm', ''), 10)
+    : parseInt(matchPart.match(/\d+$/)[0], 10);
+};
 
-function getMatchNumber(matchKey) {
-  const parts = matchKey.split('_');
-  const matchPart = parts[1];
-  if (matchPart.startsWith('qm')) {
-    return parseInt(matchPart.replace('qm', ''), 10);
+const getTeamMedian = async (team, year, cache = {}) => {
+  if (cache[team]) return cache[team];
+  const matches = await fetchTBA(`/team/${team}/matches/${year}/simple`);
+  const scores = matches
+    .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
+    .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
+  const median = calculateMedian(scores);
+  cache[team] = median;
+  return median;
+};
+
+const processMatchResults = (matches, teamKey, eventMap) => {
+  const teamScores = [];
+  let wins = 0, losses = 0, ties = 0;
+  const matchResults = [];
+
+  matches.sort((a, b) => {
+    const aTime = a.actual_time || a.predicted_time || a.time || 0;
+    const bTime = b.actual_time || b.predicted_time || b.time || 0;
+    
+    if (aTime && bTime) {
+      return aTime - bTime;
+    } else {
+      const aNum = getMatchNumber(a.key);
+      const bNum = getMatchNumber(b.key);
+      return aNum - bNum;
+    }
+  });
+
+  for (const match of matches) {
+    if (match.alliances.red.score === -1 || match.alliances.blue.score === -1) continue;
+
+    const { red, blue } = match.alliances;
+    const teamInRed = red.team_keys.includes(teamKey);
+    const teamInBlue = blue.team_keys.includes(teamKey);
+    const allianceScore = teamInRed ? red.score : blue.score;
+    teamScores.push(allianceScore);
+
+    const result = red.score > blue.score ? (teamInRed ? 'Win' : 'Loss') :
+                   red.score < blue.score ? (teamInBlue ? 'Win' : 'Loss') : 'Tie';
+    if (result === 'Win') wins++;
+    else if (result === 'Loss') losses++;
+    else ties++;
+
+    matchResults.push({
+      event: eventMap[match.event_key] || "Unknown Event",
+      matchKey: formatMatchKey(match.key),
+      redScore: red.score,
+      blueScore: blue.score,
+      result,
+      alliance: teamInRed ? 'Red' : 'Blue',
+      rawKey: match.key,
+      score: allianceScore
+    });
   }
-  return parseInt(matchPart.match(/\d+$/)[0], 10);
-}
 
-async function estimateQueuingTime(eventKey, futureMatches, currentDate) {
+  return { teamScores, wins, losses, ties, matchResults };
+};
+
+const predictMatchOutcome = async (match, year, teamMedianCache) => {
+  const { red, blue } = match.alliances;
+  const redMedians = await Promise.all(red.team_keys.map(team => getTeamMedian(team, year, teamMedianCache)));
+  const blueMedians = await Promise.all(blue.team_keys.map(team => getTeamMedian(team, year, teamMedianCache)));
+  const redAllianceMedian = calculateMedian(redMedians);
+  const blueAllianceMedian = calculateMedian(blueMedians);
+
+  return {
+    matchKey: formatMatchKey(match.key),
+    redTeams: red.team_keys.join(', '),
+    blueTeams: blue.team_keys.join(', '),
+    redMedian: redAllianceMedian.toFixed(2),
+    blueMedian: blueAllianceMedian.toFixed(2),
+    predictedWinner: redAllianceMedian > blueAllianceMedian ? 'Red' : 'Blue'
+  };
+};
+
+const estimateQueuingTime = async (eventKey, futureMatches, currentDate) => {
   try {
-    const eventMatchesResponse = await axios.get(
-      `${TBA_BASE_URL}/event/${eventKey}/matches/simple`,
-      { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
-    );
-    const allEventMatches = eventMatchesResponse.data;
-
-    const completedMatches = allEventMatches
-      .filter(match => match.actual_time && match.alliances.red.score !== -1 && match.alliances.blue.score !== -1)
+    const matches = await fetchTBA(`/event/${eventKey}/matches/simple`);
+    const completedMatches = matches
+      .filter(m => m.actual_time && m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
       .sort((a, b) => a.actual_time - b.actual_time);
 
     const MIN_MATCH_INTERVAL = 20000;
-    let avgTimeBetweenMatches;
-
-    if (completedMatches.length < 2) {
-      avgTimeBetweenMatches = MIN_MATCH_INTERVAL;
-    } else {
-      const matchesByDay = {};
-      completedMatches.forEach(match => {
-        const matchDate = new Date(match.actual_time * 1000);
-        const dayKey = `${matchDate.getFullYear()}-${matchDate.getMonth()}-${matchDate.getDate()}`;
-        if (!matchesByDay[dayKey]) {
-          matchesByDay[dayKey] = [];
-        }
-        matchesByDay[dayKey].push(match);
-      });
-
-      const currentDay = new Date(currentDate);
-      const currentDayKey = `${currentDay.getFullYear()}-${currentDay.getMonth()}-${currentDay.getDate()}`;
-      const todayMatches = matchesByDay[currentDayKey] || [];
-
-      if (todayMatches.length < 2) {
-        const timeDiffs = [];
-        for (let i = 1; i < completedMatches.length; i++) {
-          const prevStart = completedMatches[i - 1].actual_time * 1000;
-          const currStart = completedMatches[i].actual_time * 1000;
-          const diff = currStart - prevStart;
-          if (diff > 0) timeDiffs.push(diff);
-        }
-        avgTimeBetweenMatches = timeDiffs.length > 0 
-          ? timeDiffs.reduce((sum, diff) => sum + diff, 0) / timeDiffs.length 
-          : MIN_MATCH_INTERVAL;
-      } else {
-        const timeDiffs = [];
-        for (let i = 1; i < todayMatches.length; i++) {
-          const prevStart = todayMatches[i - 1].actual_time * 1000;
-          const currStart = todayMatches[i].actual_time * 1000;
-          const diff = currStart - prevStart;
-          if (diff > 0) timeDiffs.push(diff);
-        }
-        avgTimeBetweenMatches = timeDiffs.reduce((sum, diff) => sum + diff, 0) / timeDiffs.length;
-      }
-      
-      avgTimeBetweenMatches = Math.max(avgTimeBetweenMatches, MIN_MATCH_INTERVAL);
-    }
+    const avgTimeBetweenMatches = completedMatches.length < 2
+      ? MIN_MATCH_INTERVAL
+      : Math.max(
+        calculateMedian(completedMatches.slice(1).map((m, i) =>
+          (m.actual_time * 1000) - (completedMatches[i].actual_time * 1000)
+        ).filter(diff => diff > 0)),
+        MIN_MATCH_INTERVAL
+      );
 
     const lastMatch = completedMatches[completedMatches.length - 1] || { time: currentDate / 1000 };
     const lastMatchTime = new Date((lastMatch.actual_time || lastMatch.time) * 1000);
@@ -124,139 +163,48 @@ async function estimateQueuingTime(eventKey, futureMatches, currentDate) {
       timeUntil: 'Not available yet'
     }));
   }
-}
+};
 
 app.get('/review/:teamNumber', async (req, res) => {
   const teamNumber = req.params.teamNumber;
   const teamKey = `frc${teamNumber}`;
-  const selectedYear = req.query.year || new Date().getFullYear();
+  const year = req.query.year || new Date().getFullYear();
   const currentDate = new Date();
 
   try {
-    const [yearsResponse, matchesCurrentYearResponse, eventsResponse, teamResponse] = await Promise.all([
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/years_participated`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } })
+    const [years, matches, events, team] = await Promise.all([
+      fetchTBA(`/team/${teamKey}/years_participated`),
+      fetchTBA(`/team/${teamKey}/matches/${year}/simple`),
+      fetchTBA(`/team/${teamKey}/events/${year}/simple`),
+      fetchTBA(`/team/${teamKey}/simple`)
     ]);
 
-    const yearsParticipated = yearsResponse.data || [];
-    const allMatches = matchesCurrentYearResponse.data || [];
-    const teamName = teamResponse.data.nickname || `Team ${teamNumber}`;
-
-    const eventMap = {};
-    eventsResponse.data.forEach(event => {
-      eventMap[event.key] = event.name;
-    });
-
-    const teamScores = [];
-    let wins = 0, losses = 0, ties = 0;
-    const matchResults = [];
-
-    for (const match of allMatches) {
-      if (match.alliances.red.score === -1 || match.alliances.blue.score === -1) continue;
-
-      const redScore = match.alliances.red.score;
-      const blueScore = match.alliances.blue.score;
-      const teamInRed = match.alliances.red.team_keys.includes(teamKey);
-      const teamInBlue = match.alliances.blue.team_keys.includes(teamKey);
-
-      const allianceScore = teamInRed ? redScore : blueScore;
-      teamScores.push(allianceScore);
-
-      let result = '';
-      if (teamInRed) {
-        if (redScore > blueScore) { wins++; result = 'Win'; }
-        else if (redScore < blueScore) { losses++; result = 'Loss'; }
-        else { ties++; result = 'Tie'; }
-      } else if (teamInBlue) {
-        if (blueScore > redScore) { wins++; result = 'Win'; }
-        else if (blueScore < redScore) { losses++; result = 'Loss'; }
-        else { ties++; result = 'Tie'; }
-      }
-
-      matchResults.push({
-        event: eventMap[match.event_key] || "Unknown Event",
-        matchKey: formatMatchKey(match.key),
-        redScore,
-        blueScore,
-        result,
-        alliance: teamInRed ? 'Red' : 'Blue',
-        rawKey: match.key
-      });
-    }
-
+    const eventMap = Object.fromEntries(events.map(event => [event.key, event.name]));
+    const { teamScores, wins, losses, ties, matchResults } = processMatchResults(matches, teamKey, eventMap);
+    
     const teamMedianPoints = calculateMedian(teamScores);
     const totalMatches = wins + losses + ties;
     const winPercentage = totalMatches > 0 ? ((wins / totalMatches) * 100).toFixed(2) + '%' : 'N/A';
 
-    matchResults.sort((a, b) => {
-      const eventCompare = b.event.localeCompare(a.event);
-      if (eventCompare !== 0) return eventCompare;
-
-      const matchTypePriority = { 'Qualifier': 0, 'Quarterfinal': 1, 'Semifinal': 2, 'Final': 3 };
-      const getMatchInfo = (matchKey) => {
-        const parts = matchKey.split(' ');
-        const type = parts[parts.length - 2];
-        const number = parseInt(parts[parts.length - 1]);
-        return { type, number };
-      };
-
-      const aInfo = getMatchInfo(a.matchKey);
-      const bInfo = getMatchInfo(b.matchKey);
-
-      const typeCompare = (matchTypePriority[bInfo.type] || 0) - (matchTypePriority[aInfo.type] || 0);
-      if (typeCompare !== 0) return typeCompare;
-      return bInfo.number - aInfo.number;
-    });
-
-    const futureMatches = allMatches.filter(match => {
-      const matchTime = new Date(match.predicted_time * 1000 || match.time * 1000 || Infinity);
-      return matchTime > currentDate && match.alliances.red.score === -1 && match.alliances.blue.score === -1;
+    const futureMatches = matches.filter(m => {
+      const matchTime = new Date((m.predicted_time || m.time || Infinity) * 1000);
+      return matchTime > currentDate && m.alliances.red.score === -1 && m.alliances.blue.score === -1;
     });
 
     const teamMedianCache = {};
-    const getTeamMedian = async (team) => {
-      if (teamMedianCache[team]) return teamMedianCache[team];
-      const teamMatchesResponse = await axios.get(
-        `${TBA_BASE_URL}/team/${team}/matches/${selectedYear}/simple`,
-        { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
-      );
-      const scores = teamMatchesResponse.data
-        .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
-        .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
-      const median = calculateMedian(scores);
-      teamMedianCache[team] = median;
-      return median;
-    };
-
-    const predictions = await Promise.all(futureMatches.slice(0, 5).map(async (match) => {
-      const redTeams = match.alliances.red.team_keys;
-      const blueTeams = match.alliances.blue.team_keys;
-      const redMedians = await Promise.all(redTeams.map(getTeamMedian));
-      const blueMedians = await Promise.all(blueTeams.map(getTeamMedian));
-      const redAllianceMedian = calculateMedian(redMedians);
-      const blueAllianceMedian = calculateMedian(blueMedians);
-      const predictedWinner = redAllianceMedian > blueAllianceMedian ? 'Red' : 'Blue';
-      return {
-        matchKey: formatMatchKey(match.key),
-        redTeams: redTeams.join(', '),
-        blueTeams: blueTeams.join(', '),
-        redMedian: redAllianceMedian.toFixed(2),
-        blueMedian: blueAllianceMedian.toFixed(2),
-        predictedWinner
-      };
-    }));
-
-    const eventKey = futureMatches.length > 0 ? futureMatches[0].event_key : null;
-    const queuingEstimates = eventKey ? await estimateQueuingTime(eventKey, futureMatches, currentDate) : [];
+    const predictions = await Promise.all(futureMatches.slice(0, 5).map(match => 
+      predictMatchOutcome(match, year, teamMedianCache)
+    ));
+    const queuingEstimates = futureMatches.length > 0 
+      ? await estimateQueuingTime(futureMatches[0].event_key, futureMatches, currentDate) 
+      : [];
 
     res.render('review', {
       teamNumber,
-      teamName,
-      year: selectedYear,
-      yearsParticipated,
-      message: allMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
+      teamName: team.nickname || `Team ${teamNumber}`,
+      year,
+      yearsParticipated: years,
+      message: matches.length === 0 ? `No matches found for Team ${teamNumber} in ${year}.` : null,
       teamMedianPoints: teamMedianPoints.toFixed(2),
       wins,
       losses,
@@ -264,185 +212,28 @@ app.get('/review/:teamNumber', async (req, res) => {
       winPercentage,
       matches: matchResults,
       predictions,
-      queuingEstimates
+      queuingEstimates,
+      matchScores: matchResults.map(m => ({ label: m.matchKey, score: m.score }))
     });
   } catch (error) {
     console.error(error);
     res.render('review', {
       teamNumber,
       teamName: `Team ${teamNumber}`,
-      year: selectedYear,
+      year,
       yearsParticipated: [],
       message: 'Error fetching data from The Blue Alliance.',
       teamMedianPoints: null,
       winPercentage: null,
       matches: [],
       predictions: [],
-      queuingEstimates: []
+      queuingEstimates: [],
+      matchScores: []
     });
   }
 });
 
-app.get('/review/:teamNumber', async (req, res) => {
-  const teamNumber = req.params.teamNumber;
-  const teamKey = `frc${teamNumber}`;
-  const selectedYear = req.query.year || new Date().getFullYear();
-  const currentDate = new Date();
-
-  try {
-    const [yearsResponse, matchesCurrentYearResponse, eventsResponse] = await Promise.all([
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/years_participated`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/matches/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }),
-      axios.get(`${TBA_BASE_URL}/team/${teamKey}/events/${selectedYear}/simple`, { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } })
-    ]);
-
-    const yearsParticipated = yearsResponse.data || [];
-    const allMatches = matchesCurrentYearResponse.data || [];
-
-    const eventMap = {};
-    eventsResponse.data.forEach(event => {
-      eventMap[event.key] = event.name;
-    });
-
-    const teamScores = [];
-    let wins = 0, losses = 0, ties = 0;
-    const matchResults = [];
-
-    for (const match of allMatches) {
-      if (match.alliances.red.score === -1 || match.alliances.blue.score === -1) continue;
-
-      const redScore = match.alliances.red.score;
-      const blueScore = match.alliances.blue.score;
-      const teamInRed = match.alliances.red.team_keys.includes(teamKey);
-      const teamInBlue = match.alliances.blue.team_keys.includes(teamKey);
-
-      const allianceScore = teamInRed ? redScore : blueScore;
-      teamScores.push(allianceScore);
-
-      let result = '';
-      if (teamInRed) {
-        if (redScore > blueScore) { wins++; result = 'Win'; }
-        else if (redScore < blueScore) { losses++; result = 'Loss'; }
-        else { ties++; result = 'Tie'; }
-      } else if (teamInBlue) {
-        if (blueScore > redScore) { wins++; result = 'Win'; }
-        else if (blueScore < redScore) { losses++; result = 'Loss'; }
-        else { ties++; result = 'Tie'; }
-      }
-
-      matchResults.push({
-        event: eventMap[match.event_key] || "Unknown Event",
-        matchKey: formatMatchKey(match.key),
-        redScore,
-        blueScore,
-        result,
-        alliance: teamInRed ? 'Red' : 'Blue',
-        rawKey: match.key
-      });
-    }
-
-    const teamMedianPoints = calculateMedian(teamScores);
-    const totalMatches = wins + losses + ties;
-    const winPercentage = totalMatches > 0 ? ((wins / totalMatches) * 100).toFixed(2) + '%' : 'N/A';
-
-    matchResults.sort((a, b) => {
-      const eventCompare = b.event.localeCompare(a.event);
-      if (eventCompare !== 0) return eventCompare;
-
-      const matchTypePriority = { 'Qualifier': 0, 'Quarterfinal': 1, 'Semifinal': 2, 'Final': 3 };
-      const getMatchInfo = (matchKey) => {
-        const parts = matchKey.split(' ');
-        const type = parts[parts.length - 2];
-        const number = parseInt(parts[parts.length - 1]);
-        return { type, number };
-      };
-
-      const aInfo = getMatchInfo(a.matchKey);
-      const bInfo = getMatchInfo(b.matchKey);
-
-      const typeCompare = (matchTypePriority[bInfo.type] || 0) - (matchTypePriority[aInfo.type] || 0);
-      if (typeCompare !== 0) return typeCompare;
-      return bInfo.number - aInfo.number;
-    });
-
-    const futureMatches = allMatches.filter(match => {
-      const matchTime = new Date(match.predicted_time * 1000 || match.time * 1000 || Infinity);
-      return matchTime > currentDate && match.alliances.red.score === -1 && match.alliances.blue.score === -1;
-    });
-
-    const teamMedianCache = {};
-    const getTeamMedian = async (team) => {
-      if (teamMedianCache[team]) return teamMedianCache[team];
-      const teamMatchesResponse = await axios.get(
-        `${TBA_BASE_URL}/team/${team}/matches/${selectedYear}/simple`,
-        { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
-      );
-      const scores = teamMatchesResponse.data
-        .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
-        .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
-      const median = calculateMedian(scores);
-      teamMedianCache[team] = median;
-      return median;
-    };
-
-    const predictions = await Promise.all(futureMatches.slice(0, 5).map(async (match) => {
-      const redTeams = match.alliances.red.team_keys;
-      const blueTeams = match.alliances.blue.team_keys;
-      const redMedians = await Promise.all(redTeams.map(getTeamMedian));
-      const blueMedians = await Promise.all(blueTeams.map(getTeamMedian));
-      const redAllianceMedian = calculateMedian(redMedians);
-      const blueAllianceMedian = calculateMedian(blueMedians);
-      const predictedWinner = redAllianceMedian > blueAllianceMedian ? 'Red' : 'Blue';
-      return {
-        matchKey: formatMatchKey(match.key),
-        redTeams: redTeams.join(', '),
-        blueTeams: blueTeams.join(', '),
-        redMedian: redAllianceMedian.toFixed(2),
-        blueMedian: blueAllianceMedian.toFixed(2),
-        predictedWinner
-      };
-    }));
-
-    const eventKey = futureMatches.length > 0 ? futureMatches[0].event_key : null;
-    const queuingEstimates = eventKey ? await estimateQueuingTime(eventKey, futureMatches, currentDate) : [];
-
-    res.render('review', {
-      teamNumber,
-      year: selectedYear,
-      yearsParticipated,
-      message: allMatches.length === 0 ? `No matches found for Team ${teamNumber} in ${selectedYear}.` : null,
-      teamMedianPoints: teamMedianPoints.toFixed(2),
-      wins,
-      losses,
-      ties,
-      winPercentage,
-      matches: matchResults,
-      predictions,
-      queuingEstimates
-    });
-  } catch (error) {
-    console.error(error);
-    res.render('review', {
-      teamNumber,
-      year: selectedYear,
-      yearsParticipated: [],
-      message: 'Error fetching data from The Blue Alliance.',
-      teamMedianPoints: null,
-      winPercentage: null,
-      matches: [],
-      predictions: [],
-      queuingEstimates: []
-    });
-  }
-});
-
-
-app.get('/predictor', (req, res) => {
-  res.render('predictor', { 
-    prediction: null,
-    error: null
-  });
-});
+app.get('/predictor', (req, res) => res.render('predictor', { prediction: null, error: null }));
 
 app.post('/predictor', async (req, res) => {
   try {
@@ -451,130 +242,78 @@ app.post('/predictor', async (req, res) => {
     const blueTeams = [blue1, blue2, blue3].map(num => `frc${num}`);
     const year = new Date().getFullYear();
 
-    const getTeamMedian = async (team) => {
-      const teamMatches = await axios.get(
-        `${TBA_BASE_URL}/team/${team}/matches/${year}/simple`,
-        { headers: { 'X-TBA-Auth-Key': TBA_API_KEY } }
-      );
-      const scores = teamMatches.data
-        .filter(m => m.alliances.red.score !== -1 && m.alliances.blue.score !== -1)
-        .map(m => m.alliances.red.team_keys.includes(team) ? m.alliances.red.score : m.alliances.blue.score);
-      return calculateMedian(scores);
-    };
+    const [redMedians, blueMedians] = await Promise.all([
+      Promise.all(redTeams.map(team => getTeamMedian(team, year))),
+      Promise.all(blueTeams.map(team => getTeamMedian(team, year)))
+    ]);
 
-    const redMedians = await Promise.all(redTeams.map(getTeamMedian));
-    const blueMedians = await Promise.all(blueTeams.map(getTeamMedian));
-
-    const redAllianceMedian = calculateMedian(redMedians);
-    const blueAllianceMedian = calculateMedian(blueMedians);
+    const [redAllianceMedian, blueAllianceMedian] = [calculateMedian(redMedians), calculateMedian(blueMedians)];
     const predictedWinner = redAllianceMedian > blueAllianceMedian ? 'Red' : 'Blue';
-    const winProbability = Math.round((Math.max(redAllianceMedian, blueAllianceMedian) / 
+    const winProbability = Math.round((Math.max(redAllianceMedian, blueAllianceMedian) /
       (redAllianceMedian + blueAllianceMedian)) * 100);
 
-    const prediction = {
-      redTeams: redTeams.map(t => t.replace('frc', '')),
-      blueTeams: blueTeams.map(t => t.replace('frc', '')),
-      redMedian: redAllianceMedian.toFixed(2),
-      blueMedian: blueAllianceMedian.toFixed(2),
-      predictedWinner,
-      winProbability
-    };
-
-    res.render('predictor', { 
-      prediction,
+    res.render('predictor', {
+      prediction: {
+        redTeams: redTeams.map(t => t.replace('frc', '')),
+        blueTeams: blueTeams.map(t => t.replace('frc', '')),
+        redMedian: redAllianceMedian.toFixed(2),
+        blueMedian: blueAllianceMedian.toFixed(2),
+        predictedWinner,
+        winProbability
+      },
       error: null
     });
   } catch (error) {
     console.error(error);
-    res.render('predictor', { 
+    res.render('predictor', {
       prediction: null,
       error: 'Error processing prediction. Please check team numbers and try again.'
     });
   }
 });
 
-
 app.get('/api/events', async (req, res) => {
-  const year = req.query.year || new Date().getFullYear();
   try {
-    const response = await axios.get(`${TBA_BASE_URL}/events/${year}/simple`, {
-      headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-    });
-    res.json(response.data);
+    const year = req.query.year || new Date().getFullYear();
+    const events = await fetchTBA(`/events/${year}/simple`);
+    res.json(events);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch events' });
   }
 });
 
-app.get('/compare', (req, res) => {
-  res.render('compare', {
-    commonTeams: null,
-    event1: null,
-    event2: null,
-    error: null
-  });
-});
+app.get('/compare', (req, res) => res.render('compare', { commonTeams: null, event1: null, event2: null, error: null }));
 
 app.post('/compare', async (req, res) => {
   const { event1, event2 } = req.body;
-  
   try {
-    const [event1Response, event2Response] = await Promise.all([
-      axios.get(`${TBA_BASE_URL}/event/${event1}/teams/simple`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      }),
-      axios.get(`${TBA_BASE_URL}/event/${event2}/teams/simple`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      })
+    const [teams1, teams2, event1Details, event2Details] = await Promise.all([
+      fetchTBA(`/event/${event1}/teams/simple`),
+      fetchTBA(`/event/${event2}/teams/simple`),
+      fetchTBA(`/event/${event1}/simple`),
+      fetchTBA(`/event/${event2}/simple`)
     ]);
 
-    const event1Teams = new Set(event1Response.data.map(team => team.team_number));
-    const event2Teams = event2Response.data.map(team => team.team_number);
-    
-    const commonTeamNumbers = event2Teams.filter(team => event1Teams.has(team))
+    const event1Teams = new Set(teams1.map(team => team.team_number));
+    const commonTeamNumbers = teams2.map(team => team.team_number)
+      .filter(team => event1Teams.has(team))
       .sort((a, b) => a - b);
 
-    const commonTeamsPromises = commonTeamNumbers.map(async (teamNumber) => {
-      const [teamResponse, avatarResponse] = await Promise.all([
-        axios.get(`${TBA_BASE_URL}/team/frc${teamNumber}/simple`, {
-          headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-        }),
-        axios.get(`${TBA_BASE_URL}/team/frc${teamNumber}/media/2025`, {
-          headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-        })
+    const commonTeams = await Promise.all(commonTeamNumbers.map(async teamNumber => {
+      const [team, media] = await Promise.all([
+        fetchTBA(`/team/frc${teamNumber}/simple`),
+        fetchTBA(`/team/frc${teamNumber}/media/2025`)
       ]);
-
-      const teamData = teamResponse.data;
-      const avatarData = avatarResponse.data.find(media => media.type === 'avatar');
-      const avatarUrl = avatarData?.details?.base64Image 
-        ? `data:image/png;base64,${avatarData.details.base64Image}`
-        : null;
-
+      const avatar = media.find(m => m.type === 'avatar');
       return {
         number: teamNumber,
-        name: teamData.nickname || 'Unknown Team',
-        avatar: avatarUrl
+        name: team.nickname || 'Unknown Team',
+        avatar: avatar?.details?.base64Image ? `data:image/png;base64,${avatar.details.base64Image}` : null
       };
-    });
+    }));
 
-    const commonTeams = await Promise.all(commonTeamsPromises);
-
-    const [event1Details, event2Details] = await Promise.all([
-      axios.get(`${TBA_BASE_URL}/event/${event1}/simple`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      }),
-      axios.get(`${TBA_BASE_URL}/event/${event2}/simple`, {
-        headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-      })
-    ]);
-
-    res.render('compare', {
-      commonTeams,
-      event1: event1Details.data,
-      event2: event2Details.data,
-      error: null
-    });
+    res.render('compare', { commonTeams, event1: event1Details, event2: event2Details, error: null });
   } catch (error) {
     console.error(error);
     res.render('compare', {
@@ -586,6 +325,4 @@ app.post('/compare', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
