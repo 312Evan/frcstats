@@ -106,7 +106,7 @@
             <% if (matches.length > 0) { %>
                 <div style="margin-bottom: 1em;">
                     <label for="compSelect">Competition: </label>
-                    <select id="compSelect" onchange="filterMatches(this.value)">
+                    <select style="width: 300px;" id="compSelect" onchange="filterMatches(this.value)">
                         <option value="all" selected>All Competitions</option>
                         <% const uniqueEvents = [...new Set(matches.map(m => m.event))]; %>
                         <% uniqueEvents.forEach(event => { %>
