@@ -28,10 +28,6 @@
             cursor: pointer;
             font-weight: bold;
         }
-
-        .content {
-            padding: 1em;
-        }
     </style>
 </head>
 <body>
@@ -107,7 +103,17 @@
         <summary>Past Matches</summary>
         <div class="content">
             <% if (matches.length > 0) { %>
-                <table>
+                <div style="margin-bottom: 1em;">
+                    <label for="compSelect">Competition: </label>
+                    <select id="compSelect" onchange="filterMatches(this.value)">
+                        <option value="all" selected>All Competitions</option>
+                        <% const uniqueEvents = [...new Set(matches.map(m => m.event))]; %>
+                        <% uniqueEvents.forEach(event => { %>
+                            <option value="<%= event %>"><%= event %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <table id="matchesTable">
                     <thead>
                         <tr>
                             <th>Event</th>
@@ -117,9 +123,9 @@
                             <th>Result</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="matchesBody">
                         <% matches.forEach(match => { %>
-                            <tr class="<%= match.alliance.toLowerCase() %>-row">
+                            <tr class="<%= match.alliance.toLowerCase() %>-row" data-event="<%= match.event %>">
                                 <td><%= match.event %></td>
                                 <td><%= match.matchKey %></td>
                                 <td><%= match.redScore %></td>
@@ -129,6 +135,18 @@
                         <% }) %>
                     </tbody>
                 </table>
+                <div style="margin-top: 1em;">
+                    <% uniqueEvents.forEach(event => { %>
+                        <% const eventMatches = matches.filter(m => m.event === event); %>
+                        <% const eventWins = eventMatches.filter(m => m.result === 'Win').length; %>
+                        <% const eventTotal = eventMatches.length; %>
+                        <% const winRate = eventTotal > 0 ? ((eventWins / eventTotal) * 100).toFixed(2) : 0; %>
+                        <p><%= event %> Win Rate: <%= winRate %>% (<%= eventWins %>/<%= eventTotal %>)</p>
+                    <% }) %>
+                    <% const totalWins = matches.filter(m => m.result === 'Win').length; %>
+                    <% const overallWinRate = matches.length > 0 ? ((totalWins / matches.length) * 100).toFixed(2) : 0; %>
+                    <p>Overall Win Rate: <%= overallWinRate %>% (<%= totalWins %>/<%= matches.length %>)</p>
+                </div>
             <% } else { %>
                 <p>No match results available.</p>
             <% } %>
@@ -168,6 +186,20 @@
                 }
             });
         <% } %>
+
+        function filterMatches(selectedEvent) {
+        const rows = document.querySelectorAll('#matchesBody tr');
+        rows.forEach(row => {
+            const event = row.getAttribute('data-event');
+            if (selectedEvent === 'all' || event === selectedEvent) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    filterMatches('all');
     </script>
 
     <script src="/gradient.js"></script>

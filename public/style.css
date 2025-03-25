@@ -23,7 +23,7 @@ h2 {
 
 select {
     border: none;
-    background: rgba(136, 136, 136, 0.2);
+    background-color: rgba(136, 136, 136, 0.2);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
