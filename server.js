@@ -165,6 +165,16 @@ const estimateQueuingTime = async (eventKey, futureMatches, currentDate) => {
   }
 };
 
+const fetchStatboticsRank = async (teamNumber, year) => {
+  try {
+    const response = await axios.get(`https://api.statbotics.io/v3/team_year/${teamNumber}/${year}`);
+    return response.data.epa?.ranks?.total?.rank || 'N/A';
+  } catch (error) {
+    console.error(`Error fetching Statbotics rank for team ${teamNumber}:`, error);
+    return 'N/A';
+  }
+};
+
 app.get('/review/:teamNumber', async (req, res) => {
   const teamNumber = req.params.teamNumber;
   const teamKey = `frc${teamNumber}`;
@@ -172,11 +182,12 @@ app.get('/review/:teamNumber', async (req, res) => {
   const currentDate = new Date();
 
   try {
-    const [years, matches, events, team] = await Promise.all([
+    const [years, matches, events, team, globalRank] = await Promise.all([
       fetchTBA(`/team/${teamKey}/years_participated`),
       fetchTBA(`/team/${teamKey}/matches/${year}/simple`),
       fetchTBA(`/team/${teamKey}/events/${year}/simple`),
-      fetchTBA(`/team/${teamKey}/simple`)
+      fetchTBA(`/team/${teamKey}/simple`),
+      fetchStatboticsRank(teamNumber, year)
     ]);
 
     const eventMap = Object.fromEntries(events.map(event => [event.key, event.name]));
@@ -213,7 +224,8 @@ app.get('/review/:teamNumber', async (req, res) => {
       matches: matchResults,
       predictions,
       queuingEstimates,
-      matchScores: matchResults.map(m => ({ label: m.matchKey, score: m.score }))
+      matchScores: matchResults.map(m => ({ label: m.matchKey, score: m.score })),
+      globalRank
     });
   } catch (error) {
     console.error(error);
@@ -228,7 +240,8 @@ app.get('/review/:teamNumber', async (req, res) => {
       matches: [],
       predictions: [],
       queuingEstimates: [],
-      matchScores: []
+      matchScores: [],
+      globalRank: 'N/A'
     });
   }
 });
