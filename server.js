@@ -230,14 +230,13 @@ const generateLeaderboard = async () => {
     }
 
     leaderboard.sort((a, b) => b.winLossRatio - a.winLossRatio);
-    const top250 = leaderboard.slice(0, 3500);
 
-    top250.forEach((team, index) => {
+    leaderboard.forEach((team, index) => {
       team.rank = index + 1;
     });
 
-    await fs.writeFile('leaderboard.json', JSON.stringify(top250, null, 2));
-    console.log('Leaderboard generated and saved to leaderboard.json (top 250 teams)');
+    await fs.writeFile('leaderboard.json', JSON.stringify(leaderboard, null, 2));
+    console.log(`Leaderboard generated and saved to leaderboard.json (${leaderboard.length} active teams)`);
   } catch (error) {
     console.error('Error generating leaderboard:', error);
   }
@@ -251,7 +250,25 @@ cron.schedule('0 0 * * *', () => {
 app.get('/api/leaderboard', async (req, res) => {
   try {
     const leaderboard = await fs.readFile('leaderboard.json', 'utf8');
-    res.json(JSON.parse(leaderboard));
+    const data = JSON.parse(leaderboard);
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const totalItems = data.length;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const paginatedData = data.slice(startIndex, endIndex);
+
+    res.json({
+      page,
+      limit,
+      totalItems,
+      totalPages,
+      data: paginatedData
+    });
   } catch (error) {
     console.error('Error reading leaderboard:', error);
     res.status(500).json({ error: 'Leaderboard not available yet' });
