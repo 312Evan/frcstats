@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require('axios');
+const cron = require('node-cron');
+const fs = require('fs').promises;
 const app = express();
 const port = 3000;
 
@@ -12,11 +14,18 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 
 const fetchTBA = async (endpoint) => {
-  const response = await axios.get(`${TBA_BASE_URL}${endpoint}`, {
-    headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-  });
-  return response.data;
+  try {
+    const response = await axios.get(`${TBA_BASE_URL}${endpoint}`, {
+      headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching TBA data for ${endpoint}:`, error.response?.status, error.response?.data);
+    throw error;
+  }
 };
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const calculateMedian = (scores) => {
   if (!scores.length) return 0;
@@ -174,6 +183,84 @@ const fetchStatboticsRank = async (teamNumber, year) => {
     return 'N/A';
   }
 };
+
+const fetchAllTeams = async (year) => {
+  let allTeams = [];
+  let page = 0;
+  let teams;
+
+  do {
+    teams = await fetchTBA(`/teams/${year}/${page}/simple`);
+    allTeams = allTeams.concat(teams);
+    console.log(`Fetched ${teams.length} teams from page ${page}`);
+    page++;
+    await delay(1000);
+  } while (teams.length > 0);
+
+  return allTeams;
+};
+
+const generateLeaderboard = async () => {
+  try {
+    const year = new Date().getFullYear();
+    const teams = await fetchAllTeams(year);
+    const leaderboard = [];
+
+    console.log(`Generating leaderboard for ${teams.length} teams...`);
+
+    for (const team of teams) {
+      const teamKey = team.key;
+      const matches = await fetchTBA(`/team/${teamKey}/matches/${year}/simple`);
+      const { wins, losses, ties } = processMatchResults(matches, teamKey, {});
+
+      const totalMatches = wins + losses + ties;
+      const winLossRatio = totalMatches > 0 ? (wins / (wins + losses) || 0) : 0;
+
+      leaderboard.push({
+        teamNumber: team.team_number,
+        teamName: team.nickname || `Team ${team.team_number}`,
+        wins,
+        losses,
+        ties,
+        winLossRatio: winLossRatio.toFixed(3),
+        totalMatches
+      });
+
+      await delay(200);
+    }
+
+    leaderboard.sort((a, b) => b.winLossRatio - a.winLossRatio);
+    const top250 = leaderboard.slice(0, 250);
+
+    top250.forEach((team, index) => {
+      team.rank = index + 1;
+    });
+
+    await fs.writeFile('leaderboard.json', JSON.stringify(top250, null, 2));
+    console.log('Leaderboard generated and saved to leaderboard.json (top 250 teams)');
+  } catch (error) {
+    console.error('Error generating leaderboard:', error);
+  }
+};
+
+cron.schedule('0 0 * * *', () => {
+  console.log('Running daily leaderboard refresh...');
+  generateLeaderboard();
+});
+
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+    const leaderboard = await fs.readFile('leaderboard.json', 'utf8');
+    res.json(JSON.parse(leaderboard));
+  } catch (error) {
+    console.error('Error reading leaderboard:', error);
+    res.status(500).json({ error: 'Leaderboard not available yet' });
+  }
+});
+
+app.get('/leaderboard', (req, res) => {
+  res.render('leaderboard', { year: new Date().getFullYear() });
+});
 
 app.get('/review/:teamNumber', async (req, res) => {
   const teamNumber = req.params.teamNumber;
@@ -338,4 +425,7 @@ app.post('/compare', async (req, res) => {
   }
 });
 
-app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+  generateLeaderboard();
+});

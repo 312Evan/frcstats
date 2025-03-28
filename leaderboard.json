@@ -1,0 +1,2502 @@
+[
+  {
+    "teamNumber": 456,
+    "teamName": "Siege Robotics",
+    "wins": 15,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 15,
+    "rank": 1
+  },
+  {
+    "teamNumber": 1323,
+    "teamName": "MadTown Robotics",
+    "wins": 17,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 17,
+    "rank": 2
+  },
+  {
+    "teamNumber": 1796,
+    "teamName": "RoboTigers",
+    "wins": 14,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 14,
+    "rank": 3
+  },
+  {
+    "teamNumber": 2056,
+    "teamName": "OP Robotics",
+    "wins": 17,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 17,
+    "rank": 4
+  },
+  {
+    "teamNumber": 2481,
+    "teamName": "Roboteers",
+    "wins": 34,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 34,
+    "rank": 5
+  },
+  {
+    "teamNumber": 6369,
+    "teamName": "Mercenary Robotics",
+    "wins": 17,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 17,
+    "rank": 6
+  },
+  {
+    "teamNumber": 6919,
+    "teamName": "The Commodores",
+    "wins": 17,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 17,
+    "rank": 7
+  },
+  {
+    "teamNumber": 7407,
+    "teamName": "Wired Boars",
+    "wins": 17,
+    "losses": 0,
+    "ties": 0,
+    "winLossRatio": "1.000",
+    "totalMatches": 17,
+    "rank": 8
+  },
+  {
+    "teamNumber": 9496,
+    "teamName": "LYNK",
+    "wins": 50,
+    "losses": 0,
+    "ties": 1,
+    "winLossRatio": "1.000",
+    "totalMatches": 51,
+    "rank": 9
+  },
+  {
+    "teamNumber": 422,
+    "teamName": "The Mech Tech Dragons",
+    "wins": 33,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.971",
+    "totalMatches": 34,
+    "rank": 10
+  },
+  {
+    "teamNumber": 2910,
+    "teamName": "Jack in the Bot",
+    "wins": 33,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.971",
+    "totalMatches": 34,
+    "rank": 11
+  },
+  {
+    "teamNumber": 4391,
+    "teamName": "BraveBots",
+    "wins": 33,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.971",
+    "totalMatches": 34,
+    "rank": 12
+  },
+  {
+    "teamNumber": 5940,
+    "teamName": "BREAD",
+    "wins": 32,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.970",
+    "totalMatches": 33,
+    "rank": 13
+  },
+  {
+    "teamNumber": 694,
+    "teamName": "StuyPulse",
+    "wins": 27,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.964",
+    "totalMatches": 28,
+    "rank": 14
+  },
+  {
+    "teamNumber": 2974,
+    "teamName": "Walton Robotics",
+    "wins": 33,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.943",
+    "totalMatches": 35,
+    "rank": 15
+  },
+  {
+    "teamNumber": 6329,
+    "teamName": "The Bucks' Wrath",
+    "wins": 33,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.943",
+    "totalMatches": 35,
+    "rank": 16
+  },
+  {
+    "teamNumber": 341,
+    "teamName": "Miss Daisy",
+    "wins": 32,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 34,
+    "rank": 17
+  },
+  {
+    "teamNumber": 1771,
+    "teamName": "North Gwinnett Robotics",
+    "wins": 16,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 17,
+    "rank": 18
+  },
+  {
+    "teamNumber": 2337,
+    "teamName": "EngiNERDs",
+    "wins": 16,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 17,
+    "rank": 19
+  },
+  {
+    "teamNumber": 2338,
+    "teamName": "Gear It Forward",
+    "wins": 16,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 17,
+    "rank": 20
+  },
+  {
+    "teamNumber": 2539,
+    "teamName": "Krypton Cougars",
+    "wins": 32,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 34,
+    "rank": 21
+  },
+  {
+    "teamNumber": 3478,
+    "teamName": "PrepaTec - LamBot",
+    "wins": 16,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 17,
+    "rank": 22
+  },
+  {
+    "teamNumber": 5409,
+    "teamName": "Chargers",
+    "wins": 32,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 34,
+    "rank": 23
+  },
+  {
+    "teamNumber": 7457,
+    "teamName": "suPURDUEper Robotics",
+    "wins": 32,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.941",
+    "totalMatches": 34,
+    "rank": 24
+  },
+  {
+    "teamNumber": 449,
+    "teamName": "The Blair Robot Project",
+    "wins": 31,
+    "losses": 2,
+    "ties": 1,
+    "winLossRatio": "0.939",
+    "totalMatches": 34,
+    "rank": 25
+  },
+  {
+    "teamNumber": 1501,
+    "teamName": "Team THRUST",
+    "wins": 31,
+    "losses": 2,
+    "ties": 1,
+    "winLossRatio": "0.939",
+    "totalMatches": 34,
+    "rank": 26
+  },
+  {
+    "teamNumber": 4534,
+    "teamName": "Wired Wizards",
+    "wins": 15,
+    "losses": 1,
+    "ties": 1,
+    "winLossRatio": "0.938",
+    "totalMatches": 17,
+    "rank": 27
+  },
+  {
+    "teamNumber": 5584,
+    "teamName": "ICRobotics",
+    "wins": 15,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.938",
+    "totalMatches": 16,
+    "rank": 28
+  },
+  {
+    "teamNumber": 9126,
+    "teamName": "Silver Hawks",
+    "wins": 15,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.938",
+    "totalMatches": 16,
+    "rank": 29
+  },
+  {
+    "teamNumber": 4414,
+    "teamName": "HighTide",
+    "wins": 29,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.935",
+    "totalMatches": 31,
+    "rank": 30
+  },
+  {
+    "teamNumber": 180,
+    "teamName": "S.P.A.M.",
+    "wins": 14,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.933",
+    "totalMatches": 15,
+    "rank": 31
+  },
+  {
+    "teamNumber": 111,
+    "teamName": "WildStang",
+    "wins": 13,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.929",
+    "totalMatches": 14,
+    "rank": 32
+  },
+  {
+    "teamNumber": 1197,
+    "teamName": "TorBots",
+    "wins": 13,
+    "losses": 1,
+    "ties": 1,
+    "winLossRatio": "0.929",
+    "totalMatches": 15,
+    "rank": 33
+  },
+  {
+    "teamNumber": 1710,
+    "teamName": "The Ravonics Revolution",
+    "wins": 13,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.929",
+    "totalMatches": 14,
+    "rank": 34
+  },
+  {
+    "teamNumber": 4728,
+    "teamName": "ROCORI Ratcheteers",
+    "wins": 13,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.929",
+    "totalMatches": 14,
+    "rank": 35
+  },
+  {
+    "teamNumber": 7539,
+    "teamName": "Elev8",
+    "wins": 26,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.929",
+    "totalMatches": 28,
+    "rank": 36
+  },
+  {
+    "teamNumber": 9609,
+    "teamName": "Paraducks",
+    "wins": 25,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.926",
+    "totalMatches": 27,
+    "rank": 37
+  },
+  {
+    "teamNumber": 3276,
+    "teamName": "TOOLCATS",
+    "wins": 12,
+    "losses": 1,
+    "ties": 1,
+    "winLossRatio": "0.923",
+    "totalMatches": 14,
+    "rank": 38
+  },
+  {
+    "teamNumber": 6941,
+    "teamName": "IronPulse Robotics",
+    "wins": 12,
+    "losses": 1,
+    "ties": 0,
+    "winLossRatio": "0.923",
+    "totalMatches": 13,
+    "rank": 39
+  },
+  {
+    "teamNumber": 67,
+    "teamName": "The HOT Team",
+    "wins": 32,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.914",
+    "totalMatches": 35,
+    "rank": 40
+  },
+  {
+    "teamNumber": 2767,
+    "teamName": "Stryke Force",
+    "wins": 32,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.914",
+    "totalMatches": 35,
+    "rank": 41
+  },
+  {
+    "teamNumber": 118,
+    "teamName": "Robonauts",
+    "wins": 62,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.912",
+    "totalMatches": 68,
+    "rank": 42
+  },
+  {
+    "teamNumber": 1778,
+    "teamName": "Chill Out",
+    "wins": 31,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.912",
+    "totalMatches": 34,
+    "rank": 43
+  },
+  {
+    "teamNumber": 3005,
+    "teamName": "RoboChargers",
+    "wins": 31,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.912",
+    "totalMatches": 34,
+    "rank": 44
+  },
+  {
+    "teamNumber": 3538,
+    "teamName": "RoboJackets",
+    "wins": 31,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.912",
+    "totalMatches": 34,
+    "rank": 45
+  },
+  {
+    "teamNumber": 3683,
+    "teamName": "Team DAVE",
+    "wins": 31,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.912",
+    "totalMatches": 34,
+    "rank": 46
+  },
+  {
+    "teamNumber": 8738,
+    "teamName": "Slice",
+    "wins": 31,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.912",
+    "totalMatches": 34,
+    "rank": 47
+  },
+  {
+    "teamNumber": 424,
+    "teamName": "Rust Belt Robotics",
+    "wins": 10,
+    "losses": 1,
+    "ties": 1,
+    "winLossRatio": "0.909",
+    "totalMatches": 12,
+    "rank": 48
+  },
+  {
+    "teamNumber": 3847,
+    "teamName": "Spectrum   -△◅",
+    "wins": 30,
+    "losses": 3,
+    "ties": 1,
+    "winLossRatio": "0.909",
+    "totalMatches": 34,
+    "rank": 49
+  },
+  {
+    "teamNumber": 4415,
+    "teamName": "EPIC Robotz",
+    "wins": 29,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.906",
+    "totalMatches": 32,
+    "rank": 50
+  },
+  {
+    "teamNumber": 862,
+    "teamName": "Lightning Robotics",
+    "wins": 45,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.900",
+    "totalMatches": 50,
+    "rank": 51
+  },
+  {
+    "teamNumber": 195,
+    "teamName": "CyberKnights",
+    "wins": 16,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.889",
+    "totalMatches": 18,
+    "rank": 52
+  },
+  {
+    "teamNumber": 5216,
+    "teamName": "E-Ville Empire",
+    "wins": 16,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.889",
+    "totalMatches": 18,
+    "rank": 53
+  },
+  {
+    "teamNumber": 148,
+    "teamName": "Robowranglers",
+    "wins": 31,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.886",
+    "totalMatches": 35,
+    "rank": 54
+  },
+  {
+    "teamNumber": 254,
+    "teamName": "The Cheesy Poofs",
+    "wins": 15,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 17,
+    "rank": 55
+  },
+  {
+    "teamNumber": 604,
+    "teamName": "Quixilver",
+    "wins": 15,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 17,
+    "rank": 56
+  },
+  {
+    "teamNumber": 868,
+    "teamName": "TechHOUNDS",
+    "wins": 15,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 17,
+    "rank": 57
+  },
+  {
+    "teamNumber": 1678,
+    "teamName": "Citrus Circuits",
+    "wins": 30,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 34,
+    "rank": 58
+  },
+  {
+    "teamNumber": 3663,
+    "teamName": "CPR - Cedar Park Robotics",
+    "wins": 30,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 34,
+    "rank": 59
+  },
+  {
+    "teamNumber": 4678,
+    "teamName": "CyberCavs",
+    "wins": 15,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 17,
+    "rank": 60
+  },
+  {
+    "teamNumber": 5460,
+    "teamName": "Strike Zone",
+    "wins": 30,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 34,
+    "rank": 61
+  },
+  {
+    "teamNumber": 5895,
+    "teamName": "Peddie Robotics",
+    "wins": 15,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 17,
+    "rank": 62
+  },
+  {
+    "teamNumber": 10589,
+    "teamName": "Binary Crows",
+    "wins": 15,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.882",
+    "totalMatches": 17,
+    "rank": 63
+  },
+  {
+    "teamNumber": 1690,
+    "teamName": "Orbit",
+    "wins": 44,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.880",
+    "totalMatches": 50,
+    "rank": 64
+  },
+  {
+    "teamNumber": 1756,
+    "teamName": "Argos",
+    "wins": 29,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.879",
+    "totalMatches": 33,
+    "rank": 65
+  },
+  {
+    "teamNumber": 4270,
+    "teamName": "Crusaders",
+    "wins": 29,
+    "losses": 4,
+    "ties": 1,
+    "winLossRatio": "0.879",
+    "totalMatches": 34,
+    "rank": 66
+  },
+  {
+    "teamNumber": 1706,
+    "teamName": "Ratchet Rockers",
+    "wins": 14,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.875",
+    "totalMatches": 16,
+    "rank": 67
+  },
+  {
+    "teamNumber": 2992,
+    "teamName": "The S.S. Prometheus",
+    "wins": 14,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.875",
+    "totalMatches": 16,
+    "rank": 68
+  },
+  {
+    "teamNumber": 7492,
+    "teamName": "CavBots",
+    "wins": 14,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.875",
+    "totalMatches": 16,
+    "rank": 69
+  },
+  {
+    "teamNumber": 3015,
+    "teamName": "Ranger Robotics",
+    "wins": 27,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.871",
+    "totalMatches": 31,
+    "rank": 70
+  },
+  {
+    "teamNumber": 7563,
+    "teamName": "SESI SENAI MEGAZORD",
+    "wins": 27,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.871",
+    "totalMatches": 31,
+    "rank": 71
+  },
+  {
+    "teamNumber": 2847,
+    "teamName": "The MegaHertz",
+    "wins": 13,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.867",
+    "totalMatches": 15,
+    "rank": 72
+  },
+  {
+    "teamNumber": 4611,
+    "teamName": "OZone",
+    "wins": 13,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.867",
+    "totalMatches": 15,
+    "rank": 73
+  },
+  {
+    "teamNumber": 359,
+    "teamName": "Hawaiian Kids",
+    "wins": 45,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.865",
+    "totalMatches": 52,
+    "rank": 74
+  },
+  {
+    "teamNumber": 9483,
+    "teamName": "İstanbul Wildcats",
+    "wins": 25,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.862",
+    "totalMatches": 29,
+    "rank": 75
+  },
+  {
+    "teamNumber": 125,
+    "teamName": "NUTRONs",
+    "wins": 30,
+    "losses": 5,
+    "ties": 1,
+    "winLossRatio": "0.857",
+    "totalMatches": 36,
+    "rank": 76
+  },
+  {
+    "teamNumber": 2106,
+    "teamName": "The Junkyard Dogs",
+    "wins": 30,
+    "losses": 5,
+    "ties": 1,
+    "winLossRatio": "0.857",
+    "totalMatches": 36,
+    "rank": 77
+  },
+  {
+    "teamNumber": 3572,
+    "teamName": "Wavelength",
+    "wins": 30,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.857",
+    "totalMatches": 35,
+    "rank": 78
+  },
+  {
+    "teamNumber": 9450,
+    "teamName": "Velocity Raptors",
+    "wins": 30,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.857",
+    "totalMatches": 35,
+    "rank": 79
+  },
+  {
+    "teamNumber": 33,
+    "teamName": "Killer Bees",
+    "wins": 29,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.853",
+    "totalMatches": 34,
+    "rank": 80
+  },
+  {
+    "teamNumber": 103,
+    "teamName": "Cybersonics",
+    "wins": 29,
+    "losses": 5,
+    "ties": 1,
+    "winLossRatio": "0.853",
+    "totalMatches": 35,
+    "rank": 81
+  },
+  {
+    "teamNumber": 1833,
+    "teamName": "Team BEAN",
+    "wins": 29,
+    "losses": 5,
+    "ties": 2,
+    "winLossRatio": "0.853",
+    "totalMatches": 36,
+    "rank": 82
+  },
+  {
+    "teamNumber": 4272,
+    "teamName": "Maverick Robotics",
+    "wins": 29,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.853",
+    "totalMatches": 34,
+    "rank": 83
+  },
+  {
+    "teamNumber": 4400,
+    "teamName": "Cerbotics - Peñoles",
+    "wins": 40,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.851",
+    "totalMatches": 47,
+    "rank": 84
+  },
+  {
+    "teamNumber": 190,
+    "teamName": "Gompei and the HERD",
+    "wins": 51,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.850",
+    "totalMatches": 60,
+    "rank": 85
+  },
+  {
+    "teamNumber": 2582,
+    "teamName": "PantherBots",
+    "wins": 28,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.848",
+    "totalMatches": 33,
+    "rank": 86
+  },
+  {
+    "teamNumber": 5736,
+    "teamName": "Kingsmen Robotics",
+    "wins": 28,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.848",
+    "totalMatches": 33,
+    "rank": 87
+  },
+  {
+    "teamNumber": 5449,
+    "teamName": "Prototype",
+    "wins": 11,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.846",
+    "totalMatches": 13,
+    "rank": 88
+  },
+  {
+    "teamNumber": 1731,
+    "teamName": "Fresta Valley Robotics Club",
+    "wins": 27,
+    "losses": 5,
+    "ties": 2,
+    "winLossRatio": "0.844",
+    "totalMatches": 34,
+    "rank": 89
+  },
+  {
+    "teamNumber": 3636,
+    "teamName": "Generals",
+    "wins": 27,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.844",
+    "totalMatches": 32,
+    "rank": 90
+  },
+  {
+    "teamNumber": 4561,
+    "teamName": "TerrorBytes",
+    "wins": 27,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.844",
+    "totalMatches": 32,
+    "rank": 91
+  },
+  {
+    "teamNumber": 11,
+    "teamName": "MORT",
+    "wins": 16,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.842",
+    "totalMatches": 19,
+    "rank": 92
+  },
+  {
+    "teamNumber": 3255,
+    "teamName": "SuperNURDs",
+    "wins": 26,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.839",
+    "totalMatches": 31,
+    "rank": 93
+  },
+  {
+    "teamNumber": 4635,
+    "teamName": "PrepaTec - Botbusters",
+    "wins": 26,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.839",
+    "totalMatches": 31,
+    "rank": 94
+  },
+  {
+    "teamNumber": 957,
+    "teamName": "SWARM - South and West Albany Robotics Maniacs",
+    "wins": 30,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 36,
+    "rank": 95
+  },
+  {
+    "teamNumber": 1023,
+    "teamName": "Bedford Express",
+    "wins": 30,
+    "losses": 6,
+    "ties": 1,
+    "winLossRatio": "0.833",
+    "totalMatches": 37,
+    "rank": 96
+  },
+  {
+    "teamNumber": 1156,
+    "teamName": "Under Control",
+    "wins": 25,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 30,
+    "rank": 97
+  },
+  {
+    "teamNumber": 1629,
+    "teamName": "Garrett Coalition (GaCo)",
+    "wins": 30,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 36,
+    "rank": 98
+  },
+  {
+    "teamNumber": 2052,
+    "teamName": "KnightKrawler",
+    "wins": 10,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 12,
+    "rank": 99
+  },
+  {
+    "teamNumber": 3061,
+    "teamName": "Huskie Robotics",
+    "wins": 10,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 12,
+    "rank": 100
+  },
+  {
+    "teamNumber": 7536,
+    "teamName": "ANKA ROBOTICS",
+    "wins": 10,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 12,
+    "rank": 101
+  },
+  {
+    "teamNumber": 9029,
+    "teamName": "Team NF",
+    "wins": 15,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.833",
+    "totalMatches": 18,
+    "rank": 102
+  },
+  {
+    "teamNumber": 9432,
+    "teamName": "Team 8-Bit",
+    "wins": 29,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.829",
+    "totalMatches": 35,
+    "rank": 103
+  },
+  {
+    "teamNumber": 571,
+    "teamName": "Team Paragon Robotics",
+    "wins": 14,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 17,
+    "rank": 104
+  },
+  {
+    "teamNumber": 1477,
+    "teamName": "Texas Torque",
+    "wins": 28,
+    "losses": 6,
+    "ties": 1,
+    "winLossRatio": "0.824",
+    "totalMatches": 35,
+    "rank": 105
+  },
+  {
+    "teamNumber": 2832,
+    "teamName": "The Livonia Warriors",
+    "wins": 14,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 17,
+    "rank": 106
+  },
+  {
+    "teamNumber": 3536,
+    "teamName": "Electro Eagles",
+    "wins": 28,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 34,
+    "rank": 107
+  },
+  {
+    "teamNumber": 3674,
+    "teamName": "CloverBots",
+    "wins": 28,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 34,
+    "rank": 108
+  },
+  {
+    "teamNumber": 4020,
+    "teamName": "Cyber Tribe",
+    "wins": 14,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 17,
+    "rank": 109
+  },
+  {
+    "teamNumber": 4795,
+    "teamName": "Eastbots",
+    "wins": 28,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 34,
+    "rank": 110
+  },
+  {
+    "teamNumber": 6800,
+    "teamName": "Valor",
+    "wins": 28,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.824",
+    "totalMatches": 34,
+    "rank": 111
+  },
+  {
+    "teamNumber": 8159,
+    "teamName": "Golden Horn",
+    "wins": 23,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.821",
+    "totalMatches": 28,
+    "rank": 112
+  },
+  {
+    "teamNumber": 343,
+    "teamName": "Metal-In-Motion",
+    "wins": 27,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.818",
+    "totalMatches": 33,
+    "rank": 113
+  },
+  {
+    "teamNumber": 5572,
+    "teamName": "Rosbots",
+    "wins": 27,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.818",
+    "totalMatches": 33,
+    "rank": 114
+  },
+  {
+    "teamNumber": 1538,
+    "teamName": "The Holy Cows",
+    "wins": 22,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.815",
+    "totalMatches": 27,
+    "rank": 115
+  },
+  {
+    "teamNumber": 1619,
+    "teamName": "Up-A-Creek Robotics",
+    "wins": 22,
+    "losses": 5,
+    "ties": 1,
+    "winLossRatio": "0.815",
+    "totalMatches": 28,
+    "rank": 116
+  },
+  {
+    "teamNumber": 2783,
+    "teamName": "Engineers of Tomorrow",
+    "wins": 13,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.813",
+    "totalMatches": 16,
+    "rank": 117
+  },
+  {
+    "teamNumber": 4028,
+    "teamName": "The Beak Squad",
+    "wins": 13,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.813",
+    "totalMatches": 16,
+    "rank": 118
+  },
+  {
+    "teamNumber": 4499,
+    "teamName": "The Highlanders",
+    "wins": 26,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.813",
+    "totalMatches": 32,
+    "rank": 119
+  },
+  {
+    "teamNumber": 8608,
+    "teamName": "Alpha Bots",
+    "wins": 26,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.813",
+    "totalMatches": 32,
+    "rank": 120
+  },
+  {
+    "teamNumber": 2231,
+    "teamName": "OnyxTronix",
+    "wins": 38,
+    "losses": 9,
+    "ties": 2,
+    "winLossRatio": "0.809",
+    "totalMatches": 49,
+    "rank": 121
+  },
+  {
+    "teamNumber": 386,
+    "teamName": "Team Voltage",
+    "wins": 21,
+    "losses": 5,
+    "ties": 1,
+    "winLossRatio": "0.808",
+    "totalMatches": 27,
+    "rank": 122
+  },
+  {
+    "teamNumber": 1902,
+    "teamName": "Exploding Bacon",
+    "wins": 25,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.806",
+    "totalMatches": 31,
+    "rank": 123
+  },
+  {
+    "teamNumber": 7558,
+    "teamName": "ALT-F4",
+    "wins": 29,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.806",
+    "totalMatches": 36,
+    "rank": 124
+  },
+  {
+    "teamNumber": 176,
+    "teamName": "Aces High",
+    "wins": 28,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 35,
+    "rank": 125
+  },
+  {
+    "teamNumber": 2075,
+    "teamName": "Enigma Robotics",
+    "wins": 12,
+    "losses": 3,
+    "ties": 1,
+    "winLossRatio": "0.800",
+    "totalMatches": 16,
+    "rank": 126
+  },
+  {
+    "teamNumber": 3467,
+    "teamName": "Windham Windup",
+    "wins": 28,
+    "losses": 7,
+    "ties": 1,
+    "winLossRatio": "0.800",
+    "totalMatches": 36,
+    "rank": 127
+  },
+  {
+    "teamNumber": 4005,
+    "teamName": "Hostile Gato Robotics",
+    "wins": 12,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 15,
+    "rank": 128
+  },
+  {
+    "teamNumber": 4476,
+    "teamName": "W.A.F.F.L.E.S.",
+    "wins": 28,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 35,
+    "rank": 129
+  },
+  {
+    "teamNumber": 4539,
+    "teamName": "KAOTIC Robotics",
+    "wins": 8,
+    "losses": 2,
+    "ties": 1,
+    "winLossRatio": "0.800",
+    "totalMatches": 11,
+    "rank": 130
+  },
+  {
+    "teamNumber": 4946,
+    "teamName": "The Alpha Dogs",
+    "wins": 28,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 35,
+    "rank": 131
+  },
+  {
+    "teamNumber": 5526,
+    "teamName": "Type C - Peñoles",
+    "wins": 12,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 15,
+    "rank": 132
+  },
+  {
+    "teamNumber": 5823,
+    "teamName": "ACE",
+    "wins": 8,
+    "losses": 2,
+    "ties": 1,
+    "winLossRatio": "0.800",
+    "totalMatches": 11,
+    "rank": 133
+  },
+  {
+    "teamNumber": 6147,
+    "teamName": "Tonkabots",
+    "wins": 12,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 15,
+    "rank": 134
+  },
+  {
+    "teamNumber": 7709,
+    "teamName": "Formosa Pangolin",
+    "wins": 12,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.800",
+    "totalMatches": 15,
+    "rank": 135
+  },
+  {
+    "teamNumber": 5990,
+    "teamName": "TRIGON",
+    "wins": 39,
+    "losses": 10,
+    "ties": 2,
+    "winLossRatio": "0.796",
+    "totalMatches": 51,
+    "rank": 136
+  },
+  {
+    "teamNumber": 955,
+    "teamName": "Ctrl C",
+    "wins": 27,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.794",
+    "totalMatches": 34,
+    "rank": 137
+  },
+  {
+    "teamNumber": 3990,
+    "teamName": "Tech for Kids",
+    "wins": 23,
+    "losses": 6,
+    "ties": 1,
+    "winLossRatio": "0.793",
+    "totalMatches": 30,
+    "rank": 138
+  },
+  {
+    "teamNumber": 4738,
+    "teamName": "Patribots",
+    "wins": 23,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.793",
+    "totalMatches": 29,
+    "rank": 139
+  },
+  {
+    "teamNumber": 6995,
+    "teamName": "NOMAD",
+    "wins": 38,
+    "losses": 10,
+    "ties": 0,
+    "winLossRatio": "0.792",
+    "totalMatches": 48,
+    "rank": 140
+  },
+  {
+    "teamNumber": 6002,
+    "teamName": "ZooBOTix",
+    "wins": 41,
+    "losses": 11,
+    "ties": 1,
+    "winLossRatio": "0.788",
+    "totalMatches": 53,
+    "rank": 141
+  },
+  {
+    "teamNumber": 1732,
+    "teamName": "Hilltopper Robotics",
+    "wins": 11,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.786",
+    "totalMatches": 14,
+    "rank": 142
+  },
+  {
+    "teamNumber": 3173,
+    "teamName": "IgKnighters",
+    "wins": 11,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.786",
+    "totalMatches": 14,
+    "rank": 143
+  },
+  {
+    "teamNumber": 7444,
+    "teamName": "MOON STAR ROBOTICS",
+    "wins": 11,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.786",
+    "totalMatches": 14,
+    "rank": 144
+  },
+  {
+    "teamNumber": 4451,
+    "teamName": "ROBOTZ Garage",
+    "wins": 29,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.784",
+    "totalMatches": 37,
+    "rank": 145
+  },
+  {
+    "teamNumber": 4481,
+    "teamName": "Team Rembrandts",
+    "wins": 25,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.781",
+    "totalMatches": 32,
+    "rank": 146
+  },
+  {
+    "teamNumber": 5026,
+    "teamName": "Iron Panthers",
+    "wins": 25,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.781",
+    "totalMatches": 32,
+    "rank": 147
+  },
+  {
+    "teamNumber": 7769,
+    "teamName": "The CREW",
+    "wins": 25,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.781",
+    "totalMatches": 32,
+    "rank": 148
+  },
+  {
+    "teamNumber": 494,
+    "teamName": "Martians",
+    "wins": 14,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 18,
+    "rank": 149
+  },
+  {
+    "teamNumber": 876,
+    "teamName": "Thunder Robotics",
+    "wins": 21,
+    "losses": 6,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 27,
+    "rank": 150
+  },
+  {
+    "teamNumber": 987,
+    "teamName": "HIGHROLLERS",
+    "wins": 14,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 18,
+    "rank": 151
+  },
+  {
+    "teamNumber": 2554,
+    "teamName": "The Warhawks",
+    "wins": 14,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 18,
+    "rank": 152
+  },
+  {
+    "teamNumber": 4947,
+    "teamName": "Fenix",
+    "wins": 14,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 18,
+    "rank": 153
+  },
+  {
+    "teamNumber": 6996,
+    "teamName": "Koalafied",
+    "wins": 14,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 18,
+    "rank": 154
+  },
+  {
+    "teamNumber": 10686,
+    "teamName": "Northfield Nightbots",
+    "wins": 7,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.778",
+    "totalMatches": 9,
+    "rank": 155
+  },
+  {
+    "teamNumber": 3128,
+    "teamName": "The Aluminum Narwhals",
+    "wins": 24,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.774",
+    "totalMatches": 31,
+    "rank": 156
+  },
+  {
+    "teamNumber": 3539,
+    "teamName": "Byting Bulldogs",
+    "wins": 24,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.774",
+    "totalMatches": 31,
+    "rank": 157
+  },
+  {
+    "teamNumber": 9134,
+    "teamName": "Tecmilenio - DEVOLT",
+    "wins": 24,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.774",
+    "totalMatches": 31,
+    "rank": 158
+  },
+  {
+    "teamNumber": 9408,
+    "teamName": "Warbots",
+    "wins": 24,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.774",
+    "totalMatches": 31,
+    "rank": 159
+  },
+  {
+    "teamNumber": 365,
+    "teamName": "Miracle Workerz",
+    "wins": 27,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.771",
+    "totalMatches": 35,
+    "rank": 160
+  },
+  {
+    "teamNumber": 2137,
+    "teamName": "The Oxford RoboCats",
+    "wins": 27,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.771",
+    "totalMatches": 35,
+    "rank": 161
+  },
+  {
+    "teamNumber": 3656,
+    "teamName": "Dexter Dreadbots",
+    "wins": 27,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.771",
+    "totalMatches": 35,
+    "rank": 162
+  },
+  {
+    "teamNumber": 6829,
+    "teamName": "Ignite Robotics",
+    "wins": 27,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.771",
+    "totalMatches": 35,
+    "rank": 163
+  },
+  {
+    "teamNumber": 27,
+    "teamName": "Team RUSH",
+    "wins": 40,
+    "losses": 12,
+    "ties": 0,
+    "winLossRatio": "0.769",
+    "totalMatches": 52,
+    "rank": 164
+  },
+  {
+    "teamNumber": 2472,
+    "teamName": "Centurions",
+    "wins": 10,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.769",
+    "totalMatches": 13,
+    "rank": 165
+  },
+  {
+    "teamNumber": 5472,
+    "teamName": "The Wyld Stallyns",
+    "wins": 20,
+    "losses": 6,
+    "ties": 1,
+    "winLossRatio": "0.769",
+    "totalMatches": 27,
+    "rank": 166
+  },
+  {
+    "teamNumber": 6184,
+    "teamName": "Capital City Chaotic Coders",
+    "wins": 10,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.769",
+    "totalMatches": 13,
+    "rank": 167
+  },
+  {
+    "teamNumber": 10698,
+    "teamName": "Armathronics15",
+    "wins": 10,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.769",
+    "totalMatches": 13,
+    "rank": 168
+  },
+  {
+    "teamNumber": 4500,
+    "teamName": "RoboHounds",
+    "wins": 23,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.767",
+    "totalMatches": 30,
+    "rank": 169
+  },
+  {
+    "teamNumber": 1807,
+    "teamName": "Redbird Robotics",
+    "wins": 13,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.765",
+    "totalMatches": 17,
+    "rank": 170
+  },
+  {
+    "teamNumber": 3940,
+    "teamName": "CyberTooth",
+    "wins": 13,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.765",
+    "totalMatches": 17,
+    "rank": 171
+  },
+  {
+    "teamNumber": 5468,
+    "teamName": "Chaos Theory",
+    "wins": 39,
+    "losses": 12,
+    "ties": 0,
+    "winLossRatio": "0.765",
+    "totalMatches": 51,
+    "rank": 172
+  },
+  {
+    "teamNumber": 5675,
+    "teamName": "WiredCats",
+    "wins": 26,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.765",
+    "totalMatches": 34,
+    "rank": 173
+  },
+  {
+    "teamNumber": 8352,
+    "teamName": "CODE Gold",
+    "wins": 13,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.765",
+    "totalMatches": 17,
+    "rank": 174
+  },
+  {
+    "teamNumber": 353,
+    "teamName": "POBots",
+    "wins": 25,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.758",
+    "totalMatches": 33,
+    "rank": 175
+  },
+  {
+    "teamNumber": 620,
+    "teamName": "Warbots",
+    "wins": 25,
+    "losses": 8,
+    "ties": 1,
+    "winLossRatio": "0.758",
+    "totalMatches": 34,
+    "rank": 176
+  },
+  {
+    "teamNumber": 7520,
+    "teamName": "Team MineKee",
+    "wins": 25,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.758",
+    "totalMatches": 33,
+    "rank": 177
+  },
+  {
+    "teamNumber": 9128,
+    "teamName": "ITKAN Robotics: Team Tawasaw",
+    "wins": 25,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.758",
+    "totalMatches": 33,
+    "rank": 178
+  },
+  {
+    "teamNumber": 8513,
+    "teamName": "Sisters 1st",
+    "wins": 28,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.757",
+    "totalMatches": 37,
+    "rank": 179
+  },
+  {
+    "teamNumber": 2630,
+    "teamName": "Thunderbolts",
+    "wins": 37,
+    "losses": 12,
+    "ties": 1,
+    "winLossRatio": "0.755",
+    "totalMatches": 50,
+    "rank": 180
+  },
+  {
+    "teamNumber": 59,
+    "teamName": "RamTech",
+    "wins": 9,
+    "losses": 3,
+    "ties": 1,
+    "winLossRatio": "0.750",
+    "totalMatches": 13,
+    "rank": 181
+  },
+  {
+    "teamNumber": 1730,
+    "teamName": "Team Driven",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 182
+  },
+  {
+    "teamNumber": 2199,
+    "teamName": "Robo-Lions",
+    "wins": 24,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 32,
+    "rank": 183
+  },
+  {
+    "teamNumber": 2509,
+    "teamName": "Tigerbots",
+    "wins": 9,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 12,
+    "rank": 184
+  },
+  {
+    "teamNumber": 3197,
+    "teamName": "HexHounds",
+    "wins": 21,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 28,
+    "rank": 185
+  },
+  {
+    "teamNumber": 3937,
+    "teamName": "Breakaway",
+    "wins": 24,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 32,
+    "rank": 186
+  },
+  {
+    "teamNumber": 4405,
+    "teamName": "The Atoms Family",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 187
+  },
+  {
+    "teamNumber": 4613,
+    "teamName": "Barker Redbacks",
+    "wins": 24,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 32,
+    "rank": 188
+  },
+  {
+    "teamNumber": 4632,
+    "teamName": "Monti-Pythons",
+    "wins": 9,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 12,
+    "rank": 189
+  },
+  {
+    "teamNumber": 4655,
+    "teamName": "Stateline Robotics",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 190
+  },
+  {
+    "teamNumber": 5348,
+    "teamName": "Charger Robotics 5348",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 191
+  },
+  {
+    "teamNumber": 5411,
+    "teamName": "RoboTalons",
+    "wins": 15,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 20,
+    "rank": 192
+  },
+  {
+    "teamNumber": 5614,
+    "teamName": "Team Sycamore",
+    "wins": 36,
+    "losses": 12,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 48,
+    "rank": 193
+  },
+  {
+    "teamNumber": 5913,
+    "teamName": "Patriotics",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 194
+  },
+  {
+    "teamNumber": 6424,
+    "teamName": "Stealth Panther Robotics",
+    "wins": 24,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 32,
+    "rank": 195
+  },
+  {
+    "teamNumber": 6436,
+    "teamName": "PARS ROBOTICS",
+    "wins": 12,
+    "losses": 4,
+    "ties": 2,
+    "winLossRatio": "0.750",
+    "totalMatches": 18,
+    "rank": 196
+  },
+  {
+    "teamNumber": 6940,
+    "teamName": "Violet Z",
+    "wins": 9,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 12,
+    "rank": 197
+  },
+  {
+    "teamNumber": 8808,
+    "teamName": "SWLA Tech Pirates",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 198
+  },
+  {
+    "teamNumber": 9162,
+    "teamName": "ALL MIGHT",
+    "wins": 6,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 8,
+    "rank": 199
+  },
+  {
+    "teamNumber": 9234,
+    "teamName": "Les aigles d'or",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 200
+  },
+  {
+    "teamNumber": 9295,
+    "teamName": "Harlem Rails",
+    "wins": 9,
+    "losses": 3,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 12,
+    "rank": 201
+  },
+  {
+    "teamNumber": 10260,
+    "teamName": "RoboJags",
+    "wins": 12,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 16,
+    "rank": 202
+  },
+  {
+    "teamNumber": 10479,
+    "teamName": "Powerhouse",
+    "wins": 6,
+    "losses": 2,
+    "ties": 0,
+    "winLossRatio": "0.750",
+    "totalMatches": 8,
+    "rank": 203
+  },
+  {
+    "teamNumber": 3142,
+    "teamName": "Aperture",
+    "wins": 26,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.743",
+    "totalMatches": 35,
+    "rank": 204
+  },
+  {
+    "teamNumber": 4152,
+    "teamName": "Hoya Robotics",
+    "wins": 26,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.743",
+    "totalMatches": 35,
+    "rank": 205
+  },
+  {
+    "teamNumber": 6328,
+    "teamName": "Mechanical Advantage",
+    "wins": 26,
+    "losses": 9,
+    "ties": 1,
+    "winLossRatio": "0.743",
+    "totalMatches": 36,
+    "rank": 206
+  },
+  {
+    "teamNumber": 226,
+    "teamName": "Hammerheads",
+    "wins": 23,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.742",
+    "totalMatches": 31,
+    "rank": 207
+  },
+  {
+    "teamNumber": 2714,
+    "teamName": "♨️ BBQ ♨️",
+    "wins": 23,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.742",
+    "totalMatches": 31,
+    "rank": 208
+  },
+  {
+    "teamNumber": 1860,
+    "teamName": "Alphabots",
+    "wins": 20,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.741",
+    "totalMatches": 27,
+    "rank": 209
+  },
+  {
+    "teamNumber": 6510,
+    "teamName": "Pymble Pride",
+    "wins": 20,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.741",
+    "totalMatches": 27,
+    "rank": 210
+  },
+  {
+    "teamNumber": 8503,
+    "teamName": "Raid One",
+    "wins": 20,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.741",
+    "totalMatches": 27,
+    "rank": 211
+  },
+  {
+    "teamNumber": 188,
+    "teamName": "Blizzard",
+    "wins": 14,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.737",
+    "totalMatches": 19,
+    "rank": 212
+  },
+  {
+    "teamNumber": 1768,
+    "teamName": "Nashoba Robotics",
+    "wins": 42,
+    "losses": 15,
+    "ties": 1,
+    "winLossRatio": "0.737",
+    "totalMatches": 58,
+    "rank": 213
+  },
+  {
+    "teamNumber": 1825,
+    "teamName": "The Cyborgs",
+    "wins": 14,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.737",
+    "totalMatches": 19,
+    "rank": 214
+  },
+  {
+    "teamNumber": 360,
+    "teamName": "The Revolution",
+    "wins": 25,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.735",
+    "totalMatches": 34,
+    "rank": 215
+  },
+  {
+    "teamNumber": 1506,
+    "teamName": "Metal Muscle",
+    "wins": 25,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.735",
+    "totalMatches": 34,
+    "rank": 216
+  },
+  {
+    "teamNumber": 1727,
+    "teamName": "REX",
+    "wins": 25,
+    "losses": 9,
+    "ties": 1,
+    "winLossRatio": "0.735",
+    "totalMatches": 35,
+    "rank": 217
+  },
+  {
+    "teamNumber": 9072,
+    "teamName": "TigerBots",
+    "wins": 25,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.735",
+    "totalMatches": 34,
+    "rank": 218
+  },
+  {
+    "teamNumber": 9442,
+    "teamName": "Miso Mechanics",
+    "wins": 25,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.735",
+    "totalMatches": 34,
+    "rank": 219
+  },
+  {
+    "teamNumber": 108,
+    "teamName": "SigmaC@T Robotics Team",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 220
+  },
+  {
+    "teamNumber": 237,
+    "teamName": "Black Magic Robotics",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 221
+  },
+  {
+    "teamNumber": 294,
+    "teamName": "Beach Cities Robotics",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 222
+  },
+  {
+    "teamNumber": 340,
+    "teamName": "G.R.R. (Greater Rochester Robotics)",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 223
+  },
+  {
+    "teamNumber": 801,
+    "teamName": "Horsepower",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 224
+  },
+  {
+    "teamNumber": 967,
+    "teamName": "Iron Lions",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 225
+  },
+  {
+    "teamNumber": 1296,
+    "teamName": "Full Metal Jackets",
+    "wins": 22,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 30,
+    "rank": 226
+  },
+  {
+    "teamNumber": 1701,
+    "teamName": "RoboCubs",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 227
+  },
+  {
+    "teamNumber": 3130,
+    "teamName": "The ERRORs",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 228
+  },
+  {
+    "teamNumber": 6574,
+    "teamName": "Ferradermis",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 229
+  },
+  {
+    "teamNumber": 7421,
+    "teamName": "PrepaTec - OVERTURE",
+    "wins": 22,
+    "losses": 8,
+    "ties": 2,
+    "winLossRatio": "0.733",
+    "totalMatches": 32,
+    "rank": 230
+  },
+  {
+    "teamNumber": 7426,
+    "teamName": "PAIR OF DICE ROBOTICS",
+    "wins": 22,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 30,
+    "rank": 231
+  },
+  {
+    "teamNumber": 8725,
+    "teamName": "MistyPanther",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 232
+  },
+  {
+    "teamNumber": 9233,
+    "teamName": "Luminous Robotics Team",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 233
+  },
+  {
+    "teamNumber": 9401,
+    "teamName": "Midas' Mayhem",
+    "wins": 11,
+    "losses": 4,
+    "ties": 0,
+    "winLossRatio": "0.733",
+    "totalMatches": 15,
+    "rank": 234
+  },
+  {
+    "teamNumber": 2240,
+    "teamName": "Brute Force",
+    "wins": 19,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.731",
+    "totalMatches": 26,
+    "rank": 235
+  },
+  {
+    "teamNumber": 6431,
+    "teamName": "NoktaParantez",
+    "wins": 19,
+    "losses": 7,
+    "ties": 0,
+    "winLossRatio": "0.731",
+    "totalMatches": 26,
+    "rank": 236
+  },
+  {
+    "teamNumber": 8866,
+    "teamName": "Innovation Robotics",
+    "wins": 38,
+    "losses": 14,
+    "ties": 0,
+    "winLossRatio": "0.731",
+    "totalMatches": 52,
+    "rank": 237
+  },
+  {
+    "teamNumber": 2881,
+    "teamName": "Lady Cans",
+    "wins": 27,
+    "losses": 10,
+    "ties": 0,
+    "winLossRatio": "0.730",
+    "totalMatches": 37,
+    "rank": 238
+  },
+  {
+    "teamNumber": 910,
+    "teamName": "The Foley Freeze",
+    "wins": 24,
+    "losses": 9,
+    "ties": 0,
+    "winLossRatio": "0.727",
+    "totalMatches": 33,
+    "rank": 239
+  },
+  {
+    "teamNumber": 2877,
+    "teamName": "LigerBots",
+    "wins": 32,
+    "losses": 12,
+    "ties": 0,
+    "winLossRatio": "0.727",
+    "totalMatches": 44,
+    "rank": 240
+  },
+  {
+    "teamNumber": 10541,
+    "teamName": "CarbonPulse Robotics",
+    "wins": 29,
+    "losses": 11,
+    "ties": 0,
+    "winLossRatio": "0.725",
+    "totalMatches": 40,
+    "rank": 241
+  },
+  {
+    "teamNumber": 4403,
+    "teamName": "PrepaTec - ROULT - Peñoles",
+    "wins": 21,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.724",
+    "totalMatches": 29,
+    "rank": 242
+  },
+  {
+    "teamNumber": 6036,
+    "teamName": "Peninsula Robotics",
+    "wins": 21,
+    "losses": 8,
+    "ties": 0,
+    "winLossRatio": "0.724",
+    "totalMatches": 29,
+    "rank": 243
+  },
+  {
+    "teamNumber": 469,
+    "teamName": "Las Guerrillas",
+    "wins": 26,
+    "losses": 10,
+    "ties": 0,
+    "winLossRatio": "0.722",
+    "totalMatches": 36,
+    "rank": 244
+  },
+  {
+    "teamNumber": 581,
+    "teamName": "Blazing Bulldogs",
+    "wins": 26,
+    "losses": 10,
+    "ties": 0,
+    "winLossRatio": "0.722",
+    "totalMatches": 36,
+    "rank": 245
+  },
+  {
+    "teamNumber": 900,
+    "teamName": "The Zebracorns",
+    "wins": 13,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.722",
+    "totalMatches": 18,
+    "rank": 246
+  },
+  {
+    "teamNumber": 3767,
+    "teamName": "TC Titans",
+    "wins": 26,
+    "losses": 10,
+    "ties": 1,
+    "winLossRatio": "0.722",
+    "totalMatches": 37,
+    "rank": 247
+  },
+  {
+    "teamNumber": 3986,
+    "teamName": "Express-O",
+    "wins": 13,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.722",
+    "totalMatches": 18,
+    "rank": 248
+  },
+  {
+    "teamNumber": 5406,
+    "teamName": "Celt-X",
+    "wins": 13,
+    "losses": 5,
+    "ties": 0,
+    "winLossRatio": "0.722",
+    "totalMatches": 18,
+    "rank": 249
+  },
+  {
+    "teamNumber": 610,
+    "teamName": "Crescent Coyotes",
+    "wins": 36,
+    "losses": 14,
+    "ties": 0,
+    "winLossRatio": "0.720",
+    "totalMatches": 50,
+    "rank": 250
+  }
+]

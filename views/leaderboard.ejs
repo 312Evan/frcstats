@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/logo.png">
+  <title>Leaderboard - FRCStats</title>
+  <style>
+    body {
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: #131313;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+    tr:nth-child(even) {
+      background-color: #1d1d1d;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .error {
+      color: red;
+      text-align: center;
+    }
+  </style>
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="/index.html" class="home">Home</a>
+        <h1>FRC Leaderboard</h1>
+        <p>Updates Daily</p>
+    </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Team Number</th>
+        <th>Team Name</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>Ties</th>
+        <th>Win/Loss Ratio</th>
+        <th>Total Matches</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboard-body">
+    </tbody>
+  </table>
+  <p id="error" class="error" style="display: none;"></p>
+
+  <script>
+    async function fetchLeaderboard() {
+      try {
+        const response = await fetch('/api/leaderboard');
+        const data = await response.json();
+
+        if (response.ok) {
+          const tbody = document.getElementById('leaderboard-body');
+          tbody.innerHTML = '';
+
+          data.forEach(team => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${team.rank}</td>
+              <td>${team.teamNumber}</td>
+              <td>${team.teamName}</td>
+              <td>${team.wins}</td>
+              <td>${team.losses}</td>
+              <td>${team.ties}</td>
+              <td>${team.winLossRatio}</td>
+              <td>${team.totalMatches}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        } else {
+          throw new Error(data.error || 'Failed to load leaderboard');
+        }
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        const errorElement = document.getElementById('error');
+        errorElement.textContent = 'Error loading leaderboard: ' + error.message;
+        errorElement.style.display = 'block';
+      }
+    }
+
+    window.onload = fetchLeaderboard;
+  </script>
+</body>
+</html>
