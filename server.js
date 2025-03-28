@@ -230,7 +230,7 @@ const generateLeaderboard = async () => {
     }
 
     leaderboard.sort((a, b) => b.winLossRatio - a.winLossRatio);
-    const top250 = leaderboard.slice(0, 250);
+    const top250 = leaderboard.slice(0, 3500);
 
     top250.forEach((team, index) => {
       team.rank = index + 1;
