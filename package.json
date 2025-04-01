@@ -19,6 +19,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "node-cron": "^3.0.3",
     "node-vibrant": "^4.0.3",
     "sanitize-html": "^2.14.0"
   }
